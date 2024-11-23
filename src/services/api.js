@@ -19,9 +19,9 @@ api.interceptors.request.use((config) => {
     config.url = join(apiUrl, config.url);
   }
 
-  const token = localStorage.getItem("accessToken");
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+  const accessToken = localStorage.getItem("ACCESS_TOKEN");
+  if (accessToken) {
+    config.headers.Authorization = `Bearer ${accessToken}`;
   }
 
   config.timeout = 10000;

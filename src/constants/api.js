@@ -6,6 +6,10 @@ export const server = {
   TRANSACTION_URL: `transactions`,
 };
 
+export const SUCCESS = "SUCCESS"
+export const ACCESS_TOKEN = "ACCESS_TOKEN"
+export const USER ="USER"
+
 export const NOT_CONNECT_NETWORK = "NOT_CONNECT_NETWORK";
 export const NETWORK_CONNECTION_MESSAGE =
   "Cannot connect to server, Please try again.";
