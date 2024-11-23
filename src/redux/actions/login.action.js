@@ -3,7 +3,9 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAILED,
   LOGOUT,
+  server,
 } from "./../../constants/actionType";
+import { api } from "./../../services/api";
 
 export const setLoginFetchingToState = () => ({
   type: LOGIN_FETCHING,
@@ -20,4 +22,26 @@ export const setLoginFailedToState = () => ({
 
 export const setLogoutToState = () => ({
   type: LOGOUT,
-})
+});
+
+export const login = (payload,navigate) => {
+  return async (dispatch) => {
+    try {
+      dispatch(setLoginFetchingToState());
+
+      const response = await api.post(server.LOGIN_URL, {
+        payload,
+      });
+      if (response.data.message === SUCCESS) {
+        localStorage.setItem(ACCESS_TOKEN, response.data.token);
+        localStorage.setItem(USER, JSON.stringify(response.data.user));
+        dispatch(setLoginSuccessToState(response.data.user));
+        navigate("/transaction");
+      } else {
+        dispatch(setLoginFailedToState());
+      }
+    } catch (error) {
+      dispatch(setLoginFailedToState());
+    }
+  };
+};
