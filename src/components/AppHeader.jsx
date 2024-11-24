@@ -7,22 +7,23 @@ const AppHeader = ({ collapsed, setCollapsed }) => {
   
   return (
     <Header
-    style={{
-      padding: 0,
-      background: "#fff",
-    }}
-  >
-    <Button
-      type="text"
-      icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-      onClick={() => setCollapsed(!collapsed)}
       style={{
-        fontSize: "16px",
-        width: 64,
-        height: 64,
+        padding: 0,
+        background: "#fff",
+        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
       }}
-    />
-  </Header>
+    >
+      <Button
+        type="text"
+        icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+        onClick={() => setCollapsed(!collapsed)}
+        style={{
+          fontSize: "16px",
+          width: 64,
+          height: 64,
+        }}
+      />
+    </Header>
   );
 };
 
