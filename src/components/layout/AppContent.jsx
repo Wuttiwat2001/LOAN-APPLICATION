@@ -2,8 +2,8 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import { Layout } from "antd";
 const { Content } = Layout;
-import LoginPage from "../pages/LoginPage/LoginPage";
-import RegisterPage from "../pages/RegisterPage/RegisterPage";
+import LoginPage from "../../pages/LoginPage/LoginPage";
+import RegisterPage from "../../pages/RegisterPage/RegisterPage";
 
 const AppContent = () => {
   return (
