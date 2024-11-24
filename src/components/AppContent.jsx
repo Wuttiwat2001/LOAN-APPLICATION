@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import { Layout } from "antd";
 const { Content } = Layout;
 import LoginPage from "../pages/LoginPage/LoginPage";
+import RegisterPage from "../pages/RegisterPage/RegisterPage";
 
 const AppContent = () => {
   return (
@@ -17,6 +18,7 @@ const AppContent = () => {
       <Routes>
         <Route path="/" element={<div>hello</div>} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage/>} />
         <Route path="/about" element={<div>hello about us</div>} />
       </Routes>
     </Content>
