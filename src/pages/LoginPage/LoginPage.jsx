@@ -15,13 +15,12 @@ const LoginPage = () => {
   };
 
   return (
-    <Card style={{ width: 340 }}>
-      ROw
+    <Card style={{ width: 400, height: 420 }}>
       <Typography.Title
         level={3}
         style={{ textAlign: "center", marginBottom: 24 }}
       >
-        ยืมมั้ย !
+        เข้าสู่ระบบ
       </Typography.Title>
       <Form
         name="login"
@@ -59,20 +58,35 @@ const LoginPage = () => {
         <Form.Item>
           <Flex justify="space-between" align="center">
             <Form.Item name="remember" valuePropName="checked" noStyle>
-              <Checkbox disabled={loginReducer.isFetching}>จดจำการเข้าสู่ระบบ</Checkbox>
+              <Checkbox disabled={loginReducer.isFetching}>
+                จดจำการเข้าสู่ระบบ
+              </Checkbox>
             </Form.Item>
-            <a href="" disabled={loginReducer.isFetching}>ลืมรหัสผ่าน</a>
+            <a href="" disabled={loginReducer.isFetching}>
+              ลืมรหัสผ่าน
+            </a>
           </Flex>
         </Form.Item>
 
         <Form.Item>
-          <Button block loading={loginReducer.isFetching} disabled={loginReducer.isFetching} type="primary" htmlType="submit">
+          <Button
+            block
+            loading={loginReducer.isFetching}
+            disabled={loginReducer.isFetching}
+            type="primary"
+            htmlType="submit"
+          >
             เข้าสู่ระบบ
           </Button>
         </Form.Item>
         <Flex justify="center" align="center">
           เพิ่งเคยเข้ามาในใช้ ยืมมั้ย ใช่หรือไม่&nbsp;
-          <a href="" disabled={loginReducer.isFetching}>สมัครใหม่?</a>
+          <a
+            onClick={() => navigate("/register")}
+            disabled={loginReducer.isFetching}
+          >
+            สมัครใหม่?
+          </a>
         </Flex>
       </Form>
     </Card>
