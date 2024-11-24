@@ -3,10 +3,10 @@ import {
   TRANSACTION_SUCCESS,
   TRANSACTION_FAILED,
   TRANSACTION_CLEAR,
-} from "./../../constants/actionType";
+} from "../../constants/actionType";
 
-import { server, SUCCESS } from "./../../constants/api";
-import store from "./../store";
+import { server, SUCCESS } from "../../constants/api";
+import store from "../store";
 import api from "../../services/api";
 
 export const setTransactionFetchingToState = () => ({
