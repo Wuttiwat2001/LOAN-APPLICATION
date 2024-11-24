@@ -7,21 +7,66 @@ import RegisterPage from "../pages/RegisterPage/RegisterPage";
 
 const AppContent = () => {
   return (
-    <Content
-      style={{
-        margin: "24px 16px",
-        padding: 24,
-        background: "#fff",
-        borderRadius: "8px",
-      }}
-    >
-      <Routes>
-        <Route path="/" element={<div>hello</div>} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage/>} />
-        <Route path="/about" element={<div>hello about us</div>} />
-      </Routes>
-    </Content>
+    <Routes>
+      <Route
+        path="/"
+        element={
+          <Content
+            style={{
+              margin: "24px 16px",
+              padding: 24,
+              background: "#fff",
+              borderRadius: "8px",
+            }}
+          >
+            <div>hello</div>
+          </Content>
+        }
+      />
+      <Route
+        path="/login"
+        element={
+          <Content
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <LoginPage />
+          </Content>
+        }
+      />
+      <Route
+        path="/register"
+        element={
+          <Content
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <RegisterPage />
+          </Content>
+        }
+      />
+      <Route
+        path="/about"
+        element={
+          <Content
+            style={{
+              margin: "24px 16px",
+              padding: 24,
+              background: "#fff",
+              borderRadius: "8px",
+            }}
+          >
+            <div>hello about us</div>
+          </Content>
+        }
+      />
+    </Routes>
   );
 };
 
