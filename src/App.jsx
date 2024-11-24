@@ -1,5 +1,4 @@
 import React, { useState,useEffect } from "react";
-import { BrowserRouter as Router } from "react-router-dom";
 import { Layout } from "antd";
 import AppHeader from "./components/layout/AppHeader";
 import AppMenu from "./components/layout/AppMenu";
@@ -18,7 +17,6 @@ const App = () => {
   }, []);
 
   return (
-    <Router>
       <div style={{ height: "100vh" }}>
         <Layout style={{ height: "100%" }}>
           {loginReducer.isLogin && <AppMenu collapsed={collapsed} />}
@@ -30,7 +28,6 @@ const App = () => {
           </Layout>
         </Layout>
       </div>
-    </Router>
   );
 };
 
