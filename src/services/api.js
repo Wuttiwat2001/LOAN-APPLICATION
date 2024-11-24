@@ -1,4 +1,5 @@
 import axios from "axios";
+import join from "url-join";
 import {
   apiUrl,
   NOT_CONNECT_NETWORK,
