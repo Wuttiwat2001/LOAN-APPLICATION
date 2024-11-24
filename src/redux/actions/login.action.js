@@ -3,9 +3,11 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAILED,
   LOGOUT,
-  server,
 } from "./../../constants/actionType";
-import { api } from "./../../services/api";
+
+import { server } from "./../../constants/api";
+
+import api from "../../services/api";
 
 export const setLoginFetchingToState = () => ({
   type: LOGIN_FETCHING,
@@ -24,7 +26,7 @@ export const setLogoutToState = () => ({
   type: LOGOUT,
 });
 
-export const login = (payload,navigate) => {
+export const login = (payload, navigate) => {
   return async (dispatch) => {
     try {
       dispatch(setLoginFetchingToState());

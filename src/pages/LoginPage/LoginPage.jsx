@@ -1,14 +1,22 @@
 import React from "react";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Typography, Card, Button, Checkbox, Form, Input, Flex } from "antd";
+import { useNavigate } from "react-router-dom";
+import * as loginAction from "../../redux/actions/login.action";
+import { useSelector, useDispatch } from "react-redux";
 
 const LoginPage = () => {
+  const loginReducer = useSelector((state) => state.loginReducer);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const onFinish = (values) => {
-    console.log("Received values of form: ", values);
+    dispatch(loginAction.login(values, navigate));
   };
 
   return (
     <Card style={{ width: 340 }}>
+      ROw
       <Typography.Title
         level={3}
         style={{ textAlign: "center", marginBottom: 24 }}
@@ -23,7 +31,7 @@ const LoginPage = () => {
         onFinish={onFinish}
       >
         <Form.Item
-          name="username"
+          name="email"
           rules={[
             {
               required: true,
@@ -51,20 +59,20 @@ const LoginPage = () => {
         <Form.Item>
           <Flex justify="space-between" align="center">
             <Form.Item name="remember" valuePropName="checked" noStyle>
-              <Checkbox>จดจำการเข้าสู่ระบบ</Checkbox>
+              <Checkbox disabled={loginReducer.isFetching}>จดจำการเข้าสู่ระบบ</Checkbox>
             </Form.Item>
-            <a href="">ลืมรหัสผ่าน</a>
+            <a href="" disabled={loginReducer.isFetching}>ลืมรหัสผ่าน</a>
           </Flex>
         </Form.Item>
 
         <Form.Item>
-          <Button block type="primary" htmlType="submit">
+          <Button block loading={loginReducer.isFetching} disabled={loginReducer.isFetching} type="primary" htmlType="submit">
             เข้าสู่ระบบ
           </Button>
         </Form.Item>
         <Flex justify="center" align="center">
           เพิ่งเคยเข้ามาในใช้ ยืมมั้ย ใช่หรือไม่&nbsp;
-          <a href="">สมัครใหม่?</a>
+          <a href="" disabled={loginReducer.isFetching}>สมัครใหม่?</a>
         </Flex>
       </Form>
     </Card>
