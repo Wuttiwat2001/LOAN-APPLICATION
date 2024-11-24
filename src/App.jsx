@@ -1,9 +1,9 @@
 import React, { useState,useEffect } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Layout } from "antd";
-import AppHeader from "./components/AppHeader";
-import AppMenu from "./components/AppMenu";
-import AppContent from "./components/AppContent";
+import AppHeader from "./components/layout/AppHeader";
+import AppMenu from "./components/layout/AppMenu";
+import AppContent from "./components/layout/AppContent";
 
 import { useSelector, useDispatch } from "react-redux";
 import * as loginAction from "./redux/actions/login.action";
@@ -16,7 +16,7 @@ const App = () => {
   useEffect(() => {
     dispatch(loginAction.restoreLogin());
   }, []);
-  
+
   return (
     <Router>
       <div style={{ height: "100vh" }}>
