@@ -39,7 +39,13 @@ export default (state = initialState, { type, payload }) => {
         isLogin: false,
       };
     case LOGOUT:
-      return initialState;
+      return {
+        ...state,
+        user: null,
+        isFetching: false,
+        isFailed: false,
+        isLogin: false,
+      };
     default:
       return state;
   }
