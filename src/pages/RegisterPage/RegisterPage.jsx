@@ -1,61 +1,31 @@
 import React from "react";
-import { Typography, Card, Button, Form, Input } from "antd";
+import { Row, Col, Typography, Card, Button, Form, Input } from "antd";
 import { MailOutlined, LockOutlined, UserOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
+import * as registerAction from "../../redux/actions/register.action";
+import { useSelector, useDispatch } from "react-redux";
 
-const formItemLayout = {
-  labelCol: {
-    xs: {
-      span: 24,
-    },
-    sm: {
-      span: 8,
-    },
-  },
-  wrapperCol: {
-    xs: {
-      span: 24,
-    },
-    sm: {
-      span: 16,
-    },
-  },
-};
-const tailFormItemLayout = {
-  wrapperCol: {
-    xs: {
-      span: 24,
-      offset: 0,
-    },
-    sm: {
-      span: 16,
-      offset: 8,
-    },
-  },
-};
 const RegisterPage = () => {
   const [form] = Form.useForm();
+  const registerReducer = useSelector((state) => state.registerReducer);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const onFinish = (values) => {
-    console.log("Received values of form: ", values);
+    dispatch(registerAction.register(values, navigate));
   };
 
   return (
-    <Card style={{ width: 400 }}>
+    <Card style={{ width: 400, height: 420 }}>
       <Typography.Title
         level={3}
         style={{ textAlign: "center", marginBottom: 24 }}
       >
-        ลงทะเบียนใช้งาน ยืมมั้ย !
+        ลงทะเบียนใช้งาน
       </Typography.Title>
-      <Form
-        {...formItemLayout}
-        form={form}
-        name="register"
-        onFinish={onFinish}
-        scrollToFirstError
-      >
+      <Form form={form} name="register" onFinish={onFinish} scrollToFirstError>
         <Form.Item
           name="email"
-          label="อีเมล"
           rules={[
             {
               type: "email",
@@ -67,20 +37,26 @@ const RegisterPage = () => {
             },
           ]}
         >
-          <Input prefix={<MailOutlined />} />
+          <Input
+            disabled={registerReducer.isFetching}
+            prefix={<MailOutlined />}
+            placeholder="อีเมล"
+          />
         </Form.Item>
 
         <Form.Item
           name="username"
-          label="รหัสผู้ใช้งาน"
           rules={[{ required: true, message: "กรุณากรอกรหัสผู้ใช้งาน!" }]}
         >
-          <Input prefix={<UserOutlined />} />
+          <Input
+            disabled={registerReducer.isFetching}
+            prefix={<UserOutlined />}
+            placeholder="รหัสผู้ใช้งาน"
+          />
         </Form.Item>
 
         <Form.Item
           name="password"
-          label="รหัสผ่าน"
           rules={[
             {
               required: true,
@@ -89,18 +65,21 @@ const RegisterPage = () => {
           ]}
           hasFeedback
         >
-          <Input.Password prefix={<LockOutlined />} />
+          <Input.Password
+            disabled={registerReducer.isFetching}
+            prefix={<LockOutlined />}
+            placeholder="รหัสผ่าน"
+          />
         </Form.Item>
 
         <Form.Item
           name="confirm"
-          label="ยืนยันรหัสผ่าน"
           dependencies={["password"]}
           hasFeedback
           rules={[
             {
               required: true,
-              message: "Please confirm your password!",
+              message: "กรุณายืนยันรหัสผ่าน!",
             },
             ({ getFieldValue }) => ({
               validator(_, value) {
@@ -114,19 +93,38 @@ const RegisterPage = () => {
             }),
           ]}
         >
-          <Input.Password prefix={<LockOutlined />} />
+          <Input.Password
+            disabled={registerReducer.isFetching}
+            prefix={<LockOutlined />}
+            placeholder="ยืนยันรหัสผ่าน"
+          />
         </Form.Item>
-        <Form.Item {...tailFormItemLayout}>
-          <Button
-            type="primary"
-            htmlType="submit"
-            style={{ marginRight: "8px" }}
-          >
-            ยกเลิก
-          </Button>
-          <Button type="primary" htmlType="submit">
-            ลงทะเบียน
-          </Button>
+        <Form.Item>
+          <Row gutter={8}>
+            <Col span={12}>
+              <Button
+                block
+                variant="outlined"
+                color="primary"
+                style={{ marginRight: "8px" }}
+                disabled={registerReducer.isFetching}
+                onClick={() => navigate("/login")}
+              >
+                ยกเลิก
+              </Button>
+            </Col>
+            <Col span={12}>
+              <Button
+                block
+                type="primary"
+                loading={registerReducer.isFetching}
+                disabled={registerReducer.isFetching}
+                htmlType="submit"
+              >
+                ลงทะเบียน
+              </Button>
+            </Col>
+          </Row>
         </Form.Item>
       </Form>
     </Card>
