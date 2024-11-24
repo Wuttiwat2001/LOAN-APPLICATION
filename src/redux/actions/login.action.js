@@ -39,7 +39,7 @@ export const login = (payload, navigate) => {
         localStorage.setItem(ACCESS_TOKEN, response.data.token);
         localStorage.setItem(USER, JSON.stringify(response.data.user));
         dispatch(setLoginSuccessToState(response.data.user));
-        navigate("/home");
+        navigate("/");
       } else {
         dispatch(setLoginFailedToState());
       }
