@@ -5,7 +5,7 @@ import {
   LOGOUT,
 } from "./../../constants/actionType";
 
-import { server } from "./../../constants/api";
+import { server, ACCESS_TOKEN, USER, SUCCESS } from "./../../constants/api";
 
 import api from "../../services/api";
 
@@ -32,18 +32,39 @@ export const login = (payload, navigate) => {
       dispatch(setLoginFetchingToState());
 
       const response = await api.post(server.LOGIN_URL, {
-        payload,
+        ...payload,
       });
+
       if (response.data.message === SUCCESS) {
         localStorage.setItem(ACCESS_TOKEN, response.data.token);
         localStorage.setItem(USER, JSON.stringify(response.data.user));
         dispatch(setLoginSuccessToState(response.data.user));
-        navigate("/transaction");
+        navigate("/home");
       } else {
         dispatch(setLoginFailedToState());
       }
     } catch (error) {
       dispatch(setLoginFailedToState());
     }
+  };
+};
+
+export const restoreLogin = () => {
+  return async (dispatch) => {
+    const token = localStorage.getItem(ACCESS_TOKEN);
+    const user = localStorage.getItem(USER);
+
+    if (token && user) {
+      dispatch(setLoginSuccessToState(JSON.parse(user)));
+    }
+  };
+};
+
+export const logout = (navigate) => {
+  return async (dispatch) => {
+    localStorage.removeItem(ACCESS_TOKEN);
+    localStorage.removeItem(USER);
+    dispatch(setLogoutToState());
+    navigate("/login");
   };
 };
