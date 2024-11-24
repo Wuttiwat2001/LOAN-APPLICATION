@@ -1,9 +1,9 @@
-import { Navigate, Outlet } from "react-router-dom";
-import store from "../redux/store";
+import { Navigate, Outlet,useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const PublicRoutes = () => {
-  const loginReducer = store.getState().loginReducer;
-  return loginReducer.isLogin ? <Navigate to="/home" /> : <Outlet />;
+  const isLogin = useSelector((state) => state.loginReducer.isLogin);  
+  return isLogin ? <Navigate to="/home" /> : <Outlet />;
 };
 
 export default PublicRoutes;

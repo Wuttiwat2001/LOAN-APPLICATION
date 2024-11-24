@@ -14,7 +14,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(loginAction.restoreLogin());
-  }, []);
+  }, [dispatch]);
 
   return (
       <div style={{ height: "100vh" }}>
