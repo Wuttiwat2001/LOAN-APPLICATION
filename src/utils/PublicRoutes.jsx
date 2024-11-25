@@ -25,7 +25,7 @@ const PublicRoutes = () => {
           height: "100vh",
         }}
       >
-        <Spin size="large" />
+        <Spin />
       </div>
     );
   }
