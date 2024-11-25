@@ -56,14 +56,16 @@ export const restoreLogin = () => {
 
     if (token && user) {
       dispatch(setLoginSuccessToState(JSON.parse(user)));
+    } else {
+      logout();
     }
   };
 };
 
 export const logout = (navigate) => {
   return async (dispatch) => {
-    localStorage.removeItem(ACCESS_TOKEN);
-    localStorage.removeItem(USER);
+    await localStorage.removeItem(ACCESS_TOKEN);
+    await localStorage.removeItem(USER);
     dispatch(setLogoutToState());
     navigate("/login");
   };
