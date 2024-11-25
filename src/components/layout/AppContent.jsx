@@ -7,6 +7,7 @@ const { Content } = Layout;
 import LoginPage from "../../pages/LoginPage/LoginPage";
 import RegisterPage from "../../pages/RegisterPage/RegisterPage";
 import ListRequestLoanPage from "../../pages/RequestLoanPage/ListRequestLoanPage";
+import ListRequestReceiverPage from "../../pages/RequestReceiverPage/ListRequestReceiverPage";
 
 import TransactionPage from "../../pages/TransactionPage/TransactionPage";
 
@@ -54,6 +55,7 @@ const AppContent = () => {
           element={
             <Content
               style={{
+                display: "flex",
                 margin: "24px 16px",
                 padding: 24,
                 background: "#fff",
@@ -65,30 +67,36 @@ const AppContent = () => {
           }
         />
         <Route
-          path="/about"
+          path="/request-receiver"
           element={
             <Content
               style={{
+                display: "flex",
+                flexDirection: "column",
                 margin: "24px 16px",
                 padding: 24,
                 background: "#fff",
                 borderRadius: "8px",
+                overflow: "auto",
               }}
             >
-              <div>hello about us</div>
+              <ListRequestReceiverPage />
             </Content>
           }
         />
 
         <Route
-          path="/request-loan"
+          path="/request-sender"
           element={
             <Content
               style={{
+                display: "flex",
+                flexDirection: "column",
                 margin: "24px 16px",
                 padding: 24,
                 background: "#fff",
                 borderRadius: "8px",
+                overflow: "auto",
               }}
             >
               <ListRequestLoanPage />
@@ -101,6 +109,7 @@ const AppContent = () => {
           element={
             <Content
               style={{
+                display: "flex",
                 margin: "24px 16px",
                 padding: 24,
                 background: "#fff",
