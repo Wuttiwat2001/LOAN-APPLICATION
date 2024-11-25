@@ -15,7 +15,7 @@ import { UserOutlined, PlusOutlined } from "@ant-design/icons";
 import { useSelector, useDispatch } from "react-redux";
 import moment from "moment";
 import * as userAction from "../../redux/actions/user.action";
-import * as requestAction from "../../redux/actions/request.action";
+import * as loanAction from "../../redux/actions/createRequestBorrow.action";
 
 const RequestLoanPage = () => {
   const dispatch = useDispatch();
@@ -24,15 +24,14 @@ const RequestLoanPage = () => {
   const user = useSelector((state) => state.loginReducer.user);
   const users = useSelector((state) => state.userReducer.users);
   const filteredUsers = users.filter((u) => u.id !== user.id);
-  const requestReducer = useSelector((state) => state.requestReducer);
+  const createRequestBorrowReducer = useSelector((state) => state.createRequestBorrowReducer);
 
   const onFinish = async (values) => {
-    await dispatch(requestAction.requestBorrow(values));
-
-    if (requestReducer.isSuccess) {
+    try{
+      await dispatch(loanAction.createRequestBorrow(values));
       message.success("คำร้องขอยืมเงินสำเร็จ");
       setModalOpen(false);
-    } else {
+    }catch(error){
       message.error("คำร้องขอยืมเงินไม่สำเร็จ");
       setModalOpen(false);
     }
@@ -91,7 +90,7 @@ const RequestLoanPage = () => {
         keyboard={false}
       >
         <br />
-        <Spin spinning={requestReducer.isFetching}>
+        <Spin spinning={createRequestBorrowReducer.isFetching}>
           <Form
             form={form}
             name="create_request_loan"
@@ -168,15 +167,15 @@ const RequestLoanPage = () => {
 
             <Form.Item style={{ display: "flex", justifyContent: "end" }}>
               <Button
-                disabled={requestReducer.isFetching}
+                disabled={createRequestBorrowReducer.isFetching}
                 onClick={handleCancel}
                 style={{ marginRight: "8px" }}
               >
                 ยกเลิก
               </Button>
               <Button
-                loading={requestReducer.isFetching}
-                disabled={requestReducer.isFetching}
+                loading={createRequestBorrowReducer.isFetching}
+                disabled={createRequestBorrowReducer.isFetching}
                 type="primary"
                 onClick={handleSendRequest}
               >

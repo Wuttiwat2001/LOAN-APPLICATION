@@ -1,114 +1,142 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./RequestLoan.css";
-import { useNavigate } from "react-router-dom";
-import CreateRequestLoanPage from './CreateRequestLoanPage'
-import moment from "moment";
-
+import { useSelector, useDispatch } from "react-redux";
+import CreateRequestLoanPage from "./CreateRequestLoanPage";
+import * as requestSenderAction from "../../redux/actions/requestSender.action";
 import {
+  Avatar,
   Card,
-  Space,
   Table,
   Tag,
   Typography,
   Input,
-  Button,
   Select,
-  Layout,
   Col,
   Row,
   Divider,
+  Pagination,
 } from "antd";
-const { Title } = Typography;
+const { Title, Text } = Typography;
 import {
   SearchOutlined,
-  ExportOutlined,
+  ClockCircleOutlined,
 } from "@ant-design/icons";
-
-import { useDispatch } from "react-redux";
-// import * as loanActions from "../../redux/actions/loanActions";
+import moment from "moment";
 
 const columns = [
   {
-    title: "Name",
-    dataIndex: "name",
-    key: "name",
-    render: (text) => <a>{text}</a>,
-  },
-  {
-    title: "Age",
-    dataIndex: "age",
-    key: "age",
-  },
-  {
-    title: "Address",
-    dataIndex: "address",
-    key: "address",
-  },
-  {
-    title: "Tags",
-    key: "tags",
-    dataIndex: "tags",
-    render: (_, { tags }) => (
-      <>
-        {tags.map((tag) => {
-          let color = tag.length > 5 ? "geekblue" : "green";
-          if (tag === "loser") {
-            color = "volcano";
-          }
-          return (
-            <Tag color={color} key={tag}>
-              {tag.toUpperCase()}
-            </Tag>
-          );
-        })}
-      </>
+    title: "คู่สัญญา",
+    dataIndex: "counterparty",
+    key: "counterparty",
+    render: (text) => (
+      <div>
+        <Avatar
+          style={{
+            backgroundColor: "#1677ff",
+            verticalAlign: "middle",
+          }}
+          size="large"
+        >
+          {text.charAt(0)}
+        </Avatar>
+        <Text style={{ marginLeft: "8px" }} strong>
+          {text}
+        </Text>
+      </div>
     ),
   },
   {
-    title: "Action",
-    key: "action",
-    render: (_, record) => (
-      <Space size="middle">
-        <a>Invite {record.name}</a>
-        <a>Delete</a>
-      </Space>
+    title: "สถานะ",
+    dataIndex: "status",
+    key: "status",
+    render: (text) => {
+      let color = "green";
+      if (text === "รอดำเนินการ") {
+        color = "orange";
+      } else if (text === "ปฏิเสธ") {
+        color = "red";
+      }
+      return (
+        <div>
+          <Tag color={color}>{text}</Tag>
+        </div>
+      );
+    },
+  },
+  {
+    title: "จำนวน",
+    key: "amount",
+    dataIndex: "amount",
+    render: (text) => (
+      <div>
+        <Text strong>
+          {new Intl.NumberFormat("th-TH", {
+            style: "currency",
+            currency: "THB",
+          }).format(text)}
+        </Text>
+      </div>
+    ),
+  },
+  {
+    title: "วันที่สร้าง",
+    key: "createdAt",
+    dataIndex: "createdAt",
+    render: (text) => (
+      <div>
+        <ClockCircleOutlined />
+        <Text style={{ marginLeft: "8px" }} type="secondary">
+          {moment(text).format("DD/MM/YYYY HH:mm")}
+        </Text>
+      </div>
+    ),
+  },
+  {
+    title: "วันที่อัพเดท",
+    key: "updatedAt",
+    dataIndex: "updatedAt",
+    render: (text) => (
+      <div>
+        <ClockCircleOutlined />
+        <Text style={{ marginLeft: "8px" }} type="secondary">
+          {moment(text).format("DD/MM/YYYY HH:mm")}
+        </Text>
+      </div>
     ),
   },
 ];
-const data = [
-  {
-    key: "1",
-    name: "John Brown",
-    age: 32,
-    address: "New York No. 1 Lake Park",
-    tags: ["nice", "developer"],
-  },
-  {
-    key: "2",
-    name: "Jim Green",
-    age: 42,
-    address: "London No. 1 Lake Park",
-    tags: ["loser"],
-  },
-  {
-    key: "3",
-    name: "Joe Black",
-    age: 32,
-    address: "Sydney No. 1 Lake Park",
-    tags: ["cool", "teacher"],
-  },
-];
-
-const { Content } = Layout;
-const { Option } = Select;
-
 const RequestLoanPage = () => {
-  const navigate = useNavigate();
+  const requestSenderReducer = useSelector(
+    (state) => state.requestSenderReducer
+  );
+
+
   const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(requestSenderAction.loadRequestSenders(1, 10));
+  }, []);
+
+  const dataSourceWithKeys = requestSenderReducer.requests.map(
+    (request, index) => ({
+      ...request,
+      key: request.id,
+    })
+  );
 
   const handleChange = (value) => {
-    console.log(`selected ${value}`);
+    dispatch(requestSenderAction.loadRequestSenders(1, value));
   };
+
+  const handleTableChange = (page, pageSize) => {
+    dispatch(requestSenderAction.loadRequestSenders(page, pageSize));
+  };
+
+  const startItem =
+    (requestSenderReducer.page - 1) * requestSenderReducer.pageSize + 1;
+  const endItem = Math.min(
+    requestSenderReducer.page * requestSenderReducer.pageSize,
+    requestSenderReducer.totalRequests
+  );
 
   return (
     <>
@@ -156,7 +184,7 @@ const RequestLoanPage = () => {
             />
             <div style={{ display: "flex", marginLeft: "auto" }}>
               <Select
-                defaultValue="lucy"
+                defaultValue={10}
                 style={{
                   width: 120,
                   marginRight: "8px",
@@ -164,36 +192,66 @@ const RequestLoanPage = () => {
                 onChange={handleChange}
                 options={[
                   {
-                    value: "jack",
-                    label: "Jack",
+                    value: 10,
+                    label: 10,
                   },
                   {
-                    value: "lucy",
-                    label: "Lucy",
+                    value: 20,
+                    label: 20,
                   },
                   {
-                    value: "Yiminghe",
-                    label: "yiminghe",
-                  },
-                  {
-                    value: "disabled",
-                    label: "Disabled",
-                    disabled: true,
+                    value: 50,
+                    label: 50,
                   },
                 ]}
               />
-              <Button
-                variant="outlined"
-                color="primary"
-                icon={<ExportOutlined />}
-              >
-                Export
-              </Button>
             </div>
           </Col>
         </Row>
 
-        <Table columns={columns} dataSource={data} />
+        <Table
+          scroll={{
+            y: 90 * 5,
+          }}
+          loading={requestSenderReducer.isFetching}
+          columns={columns}
+          dataSource={dataSourceWithKeys}
+          pagination={false}
+          expandable={{
+            expandedRowRender: (record) => (
+              <p
+                style={{
+                  margin: 0,
+                }}
+              >
+                รายละเอียดเพิ่มเติม : {record.description || "-"}
+              </p>
+            ),
+          }}
+        />
+        <Row>
+          <Col
+            style={{
+              padding: "16px",
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+            span={24}
+          >
+            <div>
+              <Text type="secondary">
+                แสดงรายการ {startItem} - {endItem} จาก{" "}
+                {requestSenderReducer.totalRequests} รายการ
+              </Text>
+            </div>
+            <Pagination
+              current={requestSenderReducer.page}
+              pageSize={requestSenderReducer.pageSize}
+              total={requestSenderReducer.totalRequests}
+              onChange={handleTableChange}
+            />
+          </Col>
+        </Row>
       </Card>
     </>
   );
