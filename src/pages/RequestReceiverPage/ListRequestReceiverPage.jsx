@@ -17,6 +17,8 @@ import {
   Space,
   DatePicker,
   Statistic,
+  Popconfirm,
+  Button,
 } from "antd";
 const { Title, Text } = Typography;
 import {
@@ -108,6 +110,58 @@ const columns = [
           {moment(text).format("DD/MM/YYYY HH:mm")}
         </Text>
       </div>
+    ),
+  },
+  {
+    title: "operation",
+    dataIndex: "operation",
+    render: (_, record) => (
+      <>
+        <div style={{ display: "flex" }}>
+          <div style={{ marginRight: "8px" }}>
+            <Popconfirm
+              title="คุณต้องการอนุมัติคำร้องใช่หรือไม่ ?"
+              onConfirm={() => console.log(record)}
+              okText="ตกลง"
+              cancelText="ยกเลิก"
+            >
+              <Button
+                style={{
+                  color:
+                    record.status === "รอดำเนินการ" ? "#3F8600" : undefined,
+                  borderColor:
+                    record.status === "รอดำเนินการ" ? "#3F8600" : undefined,
+                }}
+                variant="outlined"
+                disabled={record.status !== "รอดำเนินการ"}
+              >
+                อนุมัติ
+              </Button>
+            </Popconfirm>
+          </div>
+          <div>
+            <Popconfirm
+              title="คุณต้องการปฏิเสธคำร้องใช่หรือไม่ ?"
+              onConfirm={() => console.log(record)}
+              okText="ตกลง"
+              cancelText="ยกเลิก"
+            >
+              <Button
+                style={{
+                  color:
+                    record.status === "รอดำเนินการ" ? "#cf1322" : undefined,
+                  borderColor:
+                    record.status === "รอดำเนินการ" ? "#cf1322" : undefined,
+                }}
+                variant="outlined"
+                disabled={record.status !== "รอดำเนินการ"}
+              >
+                ปฏิเสธ
+              </Button>
+            </Popconfirm>
+          </div>
+        </div>
+      </>
     ),
   },
 ];
