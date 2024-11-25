@@ -80,7 +80,8 @@ const ListRequestReceiverPage = () => {
       title: "Amount",
       key: "amount",
       dataIndex: "amount",
-      render: (text) => {
+      render: (text,record) => {
+        const warningIcon = user.balance < record.amount;
         return (
           <div>
             <Text style={{ marginRight: "8px" }} strong>
@@ -90,11 +91,13 @@ const ListRequestReceiverPage = () => {
               }).format(text)}
             </Text>
             <Tooltip title="จำนวนเงินไม่พอ">
-              <ExclamationCircleOutlined
-                style={{
-                  color: "gold",
-                }}
-              />
+              {warningIcon && (
+                <ExclamationCircleOutlined
+                  style={{
+                    color: "gold",
+                  }}
+                />
+              )}
             </Tooltip>
           </div>
         );
