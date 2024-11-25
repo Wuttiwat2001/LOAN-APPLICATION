@@ -36,6 +36,9 @@ const RegisterPage = () => {
       ...values,
       phone: fullPhoneNumber,
     };
+
+
+    dispatch(registerAction.register(dataToSubmit, navigate));
   };
 
   return (
@@ -157,10 +160,10 @@ const RegisterPage = () => {
                 if (!value) {
                   return Promise.resolve();
                 }
-                if (value.length !== 10) {
+                if (value.length !== 9) {
                   return Promise.reject(
-                    "หมายเลขโทรศัพท์ต้องมีความยาว 10 ตัวอักษร!"
-                  );
+                    "หมายเลขโทรศัพท์ไม่ถูกต้อง!"
+                  );6
                 }
                 if (value.startsWith("0")) {
                   return Promise.reject(
