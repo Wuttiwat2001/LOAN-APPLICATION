@@ -5,6 +5,7 @@ import transactionReducer from "./transaction.reducer";
 import userReducer from "./user.reducer";
 import createRequestBorrowReducer from "./createRequestBorrow.reducer";
 import requestSenderReducer from "./requestSender.reducer";
+import requestReceiverReducer from "./requestReceiver.reducer";
 
 const rootReducer = combineReducers({
   loginReducer,
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
   transactionReducer,
   userReducer,
   createRequestBorrowReducer,
-  requestSenderReducer
+  requestSenderReducer,
+  requestReceiverReducer
 });
 
 export default rootReducer;
