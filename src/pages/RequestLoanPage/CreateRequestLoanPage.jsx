@@ -17,7 +17,7 @@ import moment from "moment";
 import * as userAction from "../../redux/actions/user.action";
 import * as loanAction from "../../redux/actions/createRequestBorrow.action";
 
-const RequestLoanPage = () => {
+const CreateRequestLoanPage = ({ onSuccess }) => {
   const dispatch = useDispatch();
   const [form] = Form.useForm();
 
@@ -31,6 +31,7 @@ const RequestLoanPage = () => {
       await dispatch(loanAction.createRequestBorrow(values));
       message.success("คำร้องขอยืมเงินสำเร็จ");
       setModalOpen(false);
+      onSuccess();
     }catch(error){
       message.error("คำร้องขอยืมเงินไม่สำเร็จ");
       setModalOpen(false);
@@ -209,4 +210,4 @@ const RequestLoanPage = () => {
   );
 };
 
-export default RequestLoanPage;
+export default CreateRequestLoanPage;

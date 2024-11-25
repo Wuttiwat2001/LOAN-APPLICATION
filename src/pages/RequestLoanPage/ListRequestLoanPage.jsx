@@ -182,6 +182,12 @@ const RequestLoanPage = () => {
     );
   };
 
+  const handleSuccess = () => {
+    dispatch(requestSenderAction.loadRequestSenders(1, 10, "", ["", ""]));
+    setSearchDate(["", ""]);
+    setSearchText("");
+  };
+
   const startItem =
     (requestSenderReducer.page - 1) * requestSenderReducer.pageSize + 1;
   const endItem = Math.min(
@@ -239,7 +245,7 @@ const RequestLoanPage = () => {
             <Title style={{ margin: 0 }} level={5}>
               รายการขอยืมเงิน
             </Title>
-            <CreateRequestLoanPage />
+            <CreateRequestLoanPage onSuccess={handleSuccess} />
           </Col>
         </Row>
         <Row
