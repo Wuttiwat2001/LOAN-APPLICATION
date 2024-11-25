@@ -1,17 +1,45 @@
 import React from "react";
-import { Layout, Button, Typography, Avatar, Row, Col } from "antd";
+import {
+  Dropdown,
+  message,
+  Layout,
+  Button,
+  Typography,
+  Avatar,
+  Row,
+  Col,
+} from "antd";
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
   WalletOutlined,
 } from "@ant-design/icons";
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
+import * as loginAction from "../../redux/actions/login.action";
+
 
 const { Header } = Layout;
 const { Title } = Typography;
 
 const AppHeader = ({ collapsed, setCollapsed }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const user = useSelector((state) => state.loginReducer.user);
+
+  const onClick = ({ key }) => {
+    if(key == 1){
+      dispatch(loginAction.logout(navigate));
+      message.success("ออกจากระบบสำเร็จ");
+    }
+  };
+  const items = [
+    {
+      label: "ออกจากระบบ",
+      key: "1",
+    },
+  ];
 
   return (
     <Header
@@ -51,16 +79,26 @@ const AppHeader = ({ collapsed, setCollapsed }) => {
               }).format(user?.balance)}
             </Title>
           </div>
-          <Avatar
-            style={{
-              marginRight: "16px",
-              backgroundColor: "#1677ff",
-              verticalAlign: "middle",
+
+          <Dropdown
+            menu={{
+              items,
+              onClick,
             }}
-            size="large"
           >
-            {user?.username.charAt(0)}
-          </Avatar>
+            <Avatar
+              onClick={(e) => e.preventDefault()}
+              style={{
+                cursor: "pointer",
+                marginRight: "16px",
+                backgroundColor: "#1677ff",
+                verticalAlign: "middle",
+              }}
+              size="large"
+            >
+              {user?.username.charAt(0)}
+            </Avatar>
+          </Dropdown>
         </Col>
       </Row>
     </Header>
