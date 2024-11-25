@@ -1,28 +1,24 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Form,
   Input,
   Button,
-  Select,
   InputNumber,
   DatePicker,
-  Layout,
   Modal,
+  AutoComplete,
 } from "antd";
-import { useDispatch } from "react-redux";
 import { UserOutlined, PlusOutlined } from "@ant-design/icons";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import moment from "moment";
-// import * as loanActions from "../../redux/actions/loanActions";
-
-const { Content } = Layout;
-const { Option } = Select;
+import * as userAction from "../../redux/actions/user.action";
 
 const RequestLoanPage = () => {
   const dispatch = useDispatch();
   const [form] = Form.useForm();
 
   const user = useSelector((state) => state.loginReducer.user);
+  const users = useSelector((state) => state.userReducer.users);
 
   const onFinish = (values) => {
     console.log("Received values of form: ", values);
@@ -37,9 +33,15 @@ const RequestLoanPage = () => {
 
   useEffect(() => {
     if (modalOpen) {
+      dispatch(userAction.loadUsers());
       form.resetFields();
     }
-  }, [modalOpen, form]);
+  }, [modalOpen, form, dispatch]);
+
+  const options = users.map((user) => ({
+    value: user.id,
+    label: user.fullName,
+  }));
 
   return (
     <>
@@ -59,7 +61,7 @@ const RequestLoanPage = () => {
       >
         <br />
         <Form
-               form={form}
+          form={form}
           name="request_loan"
           onFinish={onFinish}
           layout="vertical"
@@ -86,15 +88,18 @@ const RequestLoanPage = () => {
           </Form.Item>
 
           <Form.Item
-            name="lender"
+            name="receiverId"
             label="ผู้ให้ยืม"
             rules={[{ required: true, message: "กรุณาเลือกผู้ให้ยืม" }]}
           >
-            <Select placeholder="เลือกผู้ให้ยืม">
-              <Option value="A">นาย A</Option>
-              <Option value="B">นาย B</Option>
-              <Option value="C">นาย C</Option>
-            </Select>
+            <AutoComplete
+              options={options}
+              placeholder="เลือกผู้ให้ยืม"
+              filterOption={(inputValue, option) =>
+                option.label.toLowerCase().indexOf(inputValue.toLowerCase()) !==
+                -1
+              }
+            />
           </Form.Item>
 
           <Form.Item
