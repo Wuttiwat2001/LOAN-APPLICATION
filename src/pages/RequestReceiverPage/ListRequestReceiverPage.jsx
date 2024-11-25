@@ -130,8 +130,9 @@ const ListRequestReceiverPage = () => {
       title: "operation",
       dataIndex: "operation",
       render: (_, record) => {
-        const isDisabled =
+        const isDisabledApprove =
           record.status !== "รอดำเนินการ" || user.balance < record.amount;
+        const isDisabledReject = record.status !== "รอดำเนินการ";
 
         return (
           <div style={{ display: "flex" }}>
@@ -144,11 +145,11 @@ const ListRequestReceiverPage = () => {
               >
                 <Button
                   style={{
-                    color: !isDisabled ? "#3F8600" : undefined,
-                    borderColor: !isDisabled ? "#3F8600" : undefined,
+                    color: !isDisabledApprove ? "#3F8600" : undefined,
+                    borderColor: !isDisabledApprove ? "#3F8600" : undefined,
                   }}
                   variant="outlined"
-                  disabled={isDisabled}
+                  disabled={isDisabledApprove}
                 >
                   อนุมัติ
                 </Button>
@@ -163,11 +164,11 @@ const ListRequestReceiverPage = () => {
               >
                 <Button
                   style={{
-                    color: !isDisabled ? "#cf1322" : undefined,
-                    borderColor: !isDisabled ? "#cf1322" : undefined,
+                    color: !isDisabledReject ? "#cf1322" : undefined,
+                    borderColor: !isDisabledReject ? "#cf1322" : undefined,
                   }}
                   variant="outlined"
-                  disabled={isDisabled}
+                  disabled={isDisabledReject}
                 >
                   ปฏิเสธ
                 </Button>
