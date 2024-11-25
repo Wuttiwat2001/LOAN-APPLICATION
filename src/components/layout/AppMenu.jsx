@@ -1,6 +1,11 @@
 import React from "react";
 import { Layout, Menu } from "antd";
-import { UserOutlined, VideoCameraOutlined, UploadOutlined } from "@ant-design/icons";
+import {
+  HomeOutlined,
+  FileAddOutlined,
+  MailOutlined,
+  HistoryOutlined,
+} from "@ant-design/icons";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const { Sider } = Layout;
@@ -26,18 +31,23 @@ const AppMenu = ({ collapsed }) => {
         items={[
           {
             key: "/",
-            icon: <UserOutlined />,
-            label: "Home",
+            icon: <HomeOutlined />,
+            label: "หน้าหลัก",
           },
           {
-            key: "/about",
-            icon: <VideoCameraOutlined />,
-            label: "About",
+            key: "/request-sender",
+            icon: <FileAddOutlined />,
+            label: "ขอยืมเงิน",
+          },
+          {
+            key: "/request-receiver",
+            icon: <MailOutlined />,
+            label: "รายการคำร้อง",
           },
           {
             key: "/transaction",
-            icon: <UploadOutlined />,
-            label: "Transaction",
+            icon: <HistoryOutlined />,
+            label: "ธุรกรรมของฉัน",
           },
         ]}
       />
