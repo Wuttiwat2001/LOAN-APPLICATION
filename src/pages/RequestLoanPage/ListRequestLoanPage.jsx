@@ -15,10 +15,20 @@ import {
   Row,
   Divider,
   Pagination,
+  Space,
+  DatePicker,
+  Statistic,
 } from "antd";
 const { Title, Text } = Typography;
-import { SearchOutlined, ClockCircleOutlined } from "@ant-design/icons";
+import {
+  SearchOutlined,
+  ClockCircleOutlined,
+  CheckOutlined,
+  CloseOutlined,
+} from "@ant-design/icons";
+import en from "antd/es/date-picker/locale/en_US";
 import moment from "moment";
+const { RangePicker } = DatePicker;
 
 const columns = [
   {
@@ -102,15 +112,43 @@ const columns = [
     ),
   },
 ];
+
+const statusOptions = [
+  {
+    label: "รอดำเนินการ",
+    value: "รอดำเนินการ",
+  },
+  {
+    label: "อนุมัติ",
+    value: "อนุมัติ",
+  },
+  {
+    label: "ปฏิเสธ",
+    value: "ปฏิเสธ",
+  },
+];
+
+const locale = {
+  ...en,
+  lang: {
+    ...en.lang,
+    placeholder: "เลือกวันที่",
+    rangePlaceholder: ["วันเริ่มต้น", "วันที่สิ้นสุด"],
+  },
+};
+
 const RequestLoanPage = () => {
   const requestSenderReducer = useSelector(
     (state) => state.requestSenderReducer
   );
   const [searchText, setSearchText] = useState("");
+  const [searchDate, setSearchDate] = useState(["", ""]);
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(requestSenderAction.loadRequestSenders(1, 10, searchText));
+    dispatch(
+      requestSenderAction.loadRequestSenders(1, 10, searchText, searchDate)
+    );
   }, []);
 
   const dataSourceWithKeys = requestSenderReducer.requests.map(
@@ -120,13 +158,27 @@ const RequestLoanPage = () => {
     })
   );
 
-  const handleChange = (value) => {
-    dispatch(requestSenderAction.loadRequestSenders(1, value, searchText));
+  const handleChangePageSize = (value) => {
+    dispatch(
+      requestSenderAction.loadRequestSenders(1, value, searchText, searchDate)
+    );
   };
 
   const handleTableChange = (page, pageSize) => {
     dispatch(
-      requestSenderAction.loadRequestSenders(page, pageSize, searchText)
+      requestSenderAction.loadRequestSenders(
+        page,
+        pageSize,
+        searchText,
+        searchDate
+      )
+    );
+  };
+
+  const onChangeDate = (date, dateString) => {
+    setSearchDate(dateString);
+    dispatch(
+      requestSenderAction.loadRequestSenders(1, 10, searchText, dateString)
     );
   };
 
@@ -143,6 +195,36 @@ const RequestLoanPage = () => {
         ขอยืมเงิน
       </Title>
 
+      <Row style={{ marginBottom: "24px" }} gutter={16}>
+        {requestSenderReducer.statusCount.map((status, index) => (
+          <Col span={8} key={index}>
+            <Card bordered={false}>
+              <Statistic
+                title={status.status}
+                value={`${status.countStatus} รายการ`}
+                valueStyle={{
+                  color:
+                    status.status === "ปฏิเสธ"
+                      ? "#cf1322"
+                      : status.status === "รอดำเนินการ"
+                      ? "#d46b08"
+                      : "#3f8600",
+                }}
+                prefix={
+                  status.status === "ปฏิเสธ" ? (
+                    <CloseOutlined />
+                  ) : status.status === "รอดำเนินการ" ? (
+                    <ClockCircleOutlined />
+                  ) : (
+                    <CheckOutlined />
+                  )
+                }
+              />
+            </Card>
+          </Col>
+        ))}
+      </Row>
+
       <Card className="cardStyle">
         <Row>
           <Col
@@ -158,6 +240,41 @@ const RequestLoanPage = () => {
               รายการขอยืมเงิน
             </Title>
             <CreateRequestLoanPage />
+          </Col>
+        </Row>
+        <Row
+          gutter={[8]}
+          style={{
+            marginBottom: "24px",
+            paddingLeft: "24px",
+            paddingRight: "24px",
+          }}
+        >
+          <Col span={8}>
+            <Select
+              mode="multiple"
+              style={{
+                width: "100%",
+              }}
+              defaultValue={[]}
+              placeholder="กรองตามสถานะ"
+              options={statusOptions}
+              optionRender={(option) => (
+                <Space>
+                  <span>{option.data.label}</span>
+                </Space>
+              )}
+            />
+          </Col>
+
+          <Col span={8}>
+            <RangePicker
+              onChange={onChangeDate}
+              style={{
+                width: "100%",
+              }}
+              locale={locale}
+            />
           </Col>
         </Row>
         <Divider style={{ marginTop: "0px" }} />
@@ -184,11 +301,7 @@ const RequestLoanPage = () => {
               onChange={(e) => setSearchText(e.target.value)}
               onPressEnter={() =>
                 dispatch(
-                  requestSenderAction.loadRequestSenders(
-                    1,
-                    10,
-                    searchText
-                  )
+                  requestSenderAction.loadRequestSenders(1, 10, searchText)
                 )
               }
             />
@@ -199,7 +312,7 @@ const RequestLoanPage = () => {
                   width: 120,
                   marginRight: "8px",
                 }}
-                onChange={handleChange}
+                onChange={handleChangePageSize}
                 options={[
                   {
                     value: 10,

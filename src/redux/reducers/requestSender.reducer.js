@@ -12,6 +12,11 @@ const initialState = {
   totalRequests: 0,
   isFetching: false,
   isFailed: false,
+  statusCount: [
+    { status: "รอดำเนินการ", countStatus: 0 },
+    { status: "อนุมัติ", countStatus: 0 },
+    { status: "ปฏิเสธ", countStatus: 0 },
+  ],
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -25,6 +30,11 @@ export default (state = initialState, { type, payload }) => {
         totalRequests: 0,
         isFetching: true,
         isFailed: false,
+        statusCount: [
+          { status: "รอดำเนินการ", countStatus: 0 },
+          { status: "อนุมัติ", countStatus: 0 },
+          { status: "ปฏิเสธ", countStatus: 0 },
+        ],
       };
     case REQUEST_SENDER_SUCCESS:
       return {
@@ -35,6 +45,7 @@ export default (state = initialState, { type, payload }) => {
         totalRequests: payload.totalRequests,
         isFetching: false,
         isFailed: false,
+        statusCount: payload.statusCount,
       };
 
     case REQUEST_SENDER_FAILED:
@@ -46,6 +57,11 @@ export default (state = initialState, { type, payload }) => {
         totalRequests: 0,
         isFetching: false,
         isFailed: true,
+        statusCount: [
+          { status: "รอดำเนินการ", countStatus: 0 },
+          { status: "อนุมัติ", countStatus: 0 },
+          { status: "ปฏิเสธ", countStatus: 0 },
+        ],
       };
     case REQUEST_SENDER_CLEAR:
       return {
@@ -56,6 +72,11 @@ export default (state = initialState, { type, payload }) => {
         totalRequests: 0,
         isFetching: false,
         isFailed: false,
+        statusCount: [
+          { status: "รอดำเนินการ", countStatus: 0 },
+          { status: "อนุมัติ", countStatus: 0 },
+          { status: "ปฏิเสธ", countStatus: 0 },
+        ],
       };
 
     default:
