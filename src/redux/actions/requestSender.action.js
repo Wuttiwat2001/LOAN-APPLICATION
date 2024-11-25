@@ -25,7 +25,7 @@ export const setRequestClearToState = () => ({
   type: REQUEST_SENDER_CLEAR,
 });
 
-export const loadRequestSenders = (page,pageSize) => {
+export const loadRequestSenders = (page,pageSize,search) => {
   return async (dispatch) => {
     try {
       dispatch(setRequestFetchingToState());
@@ -33,8 +33,11 @@ export const loadRequestSenders = (page,pageSize) => {
       if (loginReducer.isLogin) {
         const userId = loginReducer.user.id;
 
-        const response = await api.get(
-          `${server.REQUEST_URL}/requestSender/${userId}?page=${page}&pageSize=${pageSize}`
+        const response = await api.post(
+          `${server.REQUEST_URL}/requestSender?page=${page}&pageSize${pageSize}`,{
+            userId: userId,
+            search: search
+          }
         );
 
         if ((response.data.message = SUCCESS)) {

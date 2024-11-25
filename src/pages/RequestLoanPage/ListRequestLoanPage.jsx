@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./RequestLoan.css";
 import { useSelector, useDispatch } from "react-redux";
 import CreateRequestLoanPage from "./CreateRequestLoanPage";
@@ -17,10 +17,7 @@ import {
   Pagination,
 } from "antd";
 const { Title, Text } = Typography;
-import {
-  SearchOutlined,
-  ClockCircleOutlined,
-} from "@ant-design/icons";
+import { SearchOutlined, ClockCircleOutlined } from "@ant-design/icons";
 import moment from "moment";
 
 const columns = [
@@ -109,11 +106,11 @@ const RequestLoanPage = () => {
   const requestSenderReducer = useSelector(
     (state) => state.requestSenderReducer
   );
-
+  const [searchText, setSearchText] = useState("");
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(requestSenderAction.loadRequestSenders(1, 10));
+    dispatch(requestSenderAction.loadRequestSenders(1, 10, searchText));
   }, []);
 
   const dataSourceWithKeys = requestSenderReducer.requests.map(
@@ -124,11 +121,13 @@ const RequestLoanPage = () => {
   );
 
   const handleChange = (value) => {
-    dispatch(requestSenderAction.loadRequestSenders(1, value));
+    dispatch(requestSenderAction.loadRequestSenders(1, value, searchText));
   };
 
   const handleTableChange = (page, pageSize) => {
-    dispatch(requestSenderAction.loadRequestSenders(page, pageSize));
+    dispatch(
+      requestSenderAction.loadRequestSenders(page, pageSize, searchText)
+    );
   };
 
   const startItem =
@@ -181,6 +180,17 @@ const RequestLoanPage = () => {
               style={{ width: "400px" }}
               placeholder="ค้นหาข้อมูลในตาราง"
               prefix={<SearchOutlined />}
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
+              onPressEnter={() =>
+                dispatch(
+                  requestSenderAction.loadRequestSenders(
+                    1,
+                    10,
+                    searchText
+                  )
+                )
+              }
             />
             <div style={{ display: "flex", marginLeft: "auto" }}>
               <Select
