@@ -22,7 +22,7 @@ export const setTransactionFailedToState = () => ({ type: TRANSACTION_FAILED });
 
 export const setTransactionClearToState = () => ({ type: TRANSACTION_CLEAR });
 
-export const loadTransaction = () => {
+export const loadTransactions = () => {
   return async (dispatch) => {
     try {
       dispatch(setTransactionFetchingToState());

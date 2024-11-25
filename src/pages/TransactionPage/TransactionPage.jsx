@@ -31,7 +31,7 @@ const TransactionPage = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(transactionAction.loadTransaction());
+    dispatch(transactionAction.loadTransactions());
   }, [dispatch]);
   
   const dataSourceWithKeys = transactionReducer.transactions.map((transaction, index) => ({
