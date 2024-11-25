@@ -19,6 +19,7 @@ import {
   Statistic,
   Popconfirm,
   Button,
+  Tooltip,
 } from "antd";
 const { Title, Text } = Typography;
 import {
@@ -26,171 +27,182 @@ import {
   ClockCircleOutlined,
   CheckOutlined,
   CloseOutlined,
+  ExclamationCircleOutlined,
 } from "@ant-design/icons";
 import en from "antd/es/date-picker/locale/en_US";
 import moment from "moment";
 const { RangePicker } = DatePicker;
 
-const columns = [
-  {
-    title: "คู่สัญญา",
-    dataIndex: "counterparty",
-    key: "counterparty",
-    render: (text) => (
-      <div>
-        <Avatar
-          style={{
-            backgroundColor: "#1677ff",
-            verticalAlign: "middle",
-          }}
-          size="large"
-        >
-          {text.charAt(0)}
-        </Avatar>
-        <Text style={{ marginLeft: "8px" }} strong>
-          {text}
-        </Text>
-      </div>
-    ),
-  },
-  {
-    title: "สถานะ",
-    dataIndex: "status",
-    key: "status",
-    render: (text) => {
-      let color = "green";
-      if (text === "รอดำเนินการ") {
-        color = "orange";
-      } else if (text === "ปฏิเสธ") {
-        color = "red";
-      }
-      return (
-        <div>
-          <Tag color={color}>{text}</Tag>
-        </div>
-      );
-    },
-  },
-  {
-    title: "จำนวน",
-    key: "amount",
-    dataIndex: "amount",
-    render: (text) => (
-      <div>
-        <Text strong>
-          {new Intl.NumberFormat("th-TH", {
-            style: "currency",
-            currency: "THB",
-          }).format(text)}
-        </Text>
-      </div>
-    ),
-  },
-  {
-    title: "วันที่สร้าง",
-    key: "createdAt",
-    dataIndex: "createdAt",
-    render: (text) => (
-      <div>
-        <ClockCircleOutlined />
-        <Text style={{ marginLeft: "8px" }} type="secondary">
-          {moment(text).format("DD/MM/YYYY HH:mm")}
-        </Text>
-      </div>
-    ),
-  },
-  {
-    title: "วันที่อัพเดท",
-    key: "updatedAt",
-    dataIndex: "updatedAt",
-    render: (text) => (
-      <div>
-        <ClockCircleOutlined />
-        <Text style={{ marginLeft: "8px" }} type="secondary">
-          {moment(text).format("DD/MM/YYYY HH:mm")}
-        </Text>
-      </div>
-    ),
-  },
-  {
-    title: "operation",
-    dataIndex: "operation",
-    render: (_, record) => (
-      <>
-        <div style={{ display: "flex" }}>
-          <div style={{ marginRight: "8px" }}>
-            <Popconfirm
-              title="คุณต้องการอนุมัติคำร้องใช่หรือไม่ ?"
-              onConfirm={() => console.log(record)}
-              okText="ตกลง"
-              cancelText="ยกเลิก"
-            >
-              <Button
-                style={{
-                  color:
-                    record.status === "รอดำเนินการ" ? "#3F8600" : undefined,
-                  borderColor:
-                    record.status === "รอดำเนินการ" ? "#3F8600" : undefined,
-                }}
-                variant="outlined"
-                disabled={record.status !== "รอดำเนินการ"}
-              >
-                อนุมัติ
-              </Button>
-            </Popconfirm>
-          </div>
-          <div>
-            <Popconfirm
-              title="คุณต้องการปฏิเสธคำร้องใช่หรือไม่ ?"
-              onConfirm={() => console.log(record)}
-              okText="ตกลง"
-              cancelText="ยกเลิก"
-            >
-              <Button
-                style={{
-                  color:
-                    record.status === "รอดำเนินการ" ? "#cf1322" : undefined,
-                  borderColor:
-                    record.status === "รอดำเนินการ" ? "#cf1322" : undefined,
-                }}
-                variant="outlined"
-                disabled={record.status !== "รอดำเนินการ"}
-              >
-                ปฏิเสธ
-              </Button>
-            </Popconfirm>
-          </div>
-        </div>
-      </>
-    ),
-  },
-];
-
-const statusOptions = [
-  {
-    label: "รอดำเนินการ",
-    value: "รอดำเนินการ",
-  },
-  {
-    label: "อนุมัติ",
-    value: "อนุมัติ",
-  },
-  {
-    label: "ปฏิเสธ",
-    value: "ปฏิเสธ",
-  },
-];
-
-const locale = {
-  ...en,
-  lang: {
-    ...en.lang,
-    placeholder: "เลือกวันที่",
-    rangePlaceholder: ["วันเริ่มต้น", "วันที่สิ้นสุด"],
-  },
-};
-
 const ListRequestReceiverPage = () => {
+  const user = useSelector((state) => state.loginReducer.user);
+
+  const columns = [
+    {
+      title: "คู่สัญญา",
+      dataIndex: "counterparty",
+      key: "counterparty",
+      render: (text) => (
+        <div>
+          <Avatar
+            style={{
+              backgroundColor: "#1677ff",
+              verticalAlign: "middle",
+            }}
+            size="large"
+          >
+            {text.charAt(0)}
+          </Avatar>
+          <Text style={{ marginLeft: "8px" }} strong>
+            {text}
+          </Text>
+        </div>
+      ),
+    },
+    {
+      title: "สถานะ",
+      dataIndex: "status",
+      key: "status",
+      render: (text) => {
+        let color = "green";
+        if (text === "รอดำเนินการ") {
+          color = "orange";
+        } else if (text === "ปฏิเสธ") {
+          color = "red";
+        }
+        return (
+          <div>
+            <Tag color={color}>{text}</Tag>
+          </div>
+        );
+      },
+    },
+    {
+      title: "Amount",
+      key: "amount",
+      dataIndex: "amount",
+      render: (text) => {
+        return (
+          <div>
+            <Text style={{ marginRight: "8px" }} strong>
+              {new Intl.NumberFormat("th-TH", {
+                style: "currency",
+                currency: "THB",
+              }).format(text)}
+            </Text>
+            <Tooltip title="จำนวนเงินไม่พอ">
+              <ExclamationCircleOutlined
+                style={{
+                  color: "gold",
+                }}
+              />
+            </Tooltip>
+          </div>
+        );
+      },
+    },
+    {
+      title: "วันที่สร้าง",
+      key: "createdAt",
+      dataIndex: "createdAt",
+      render: (text) => (
+        <div>
+          <ClockCircleOutlined />
+          <Text style={{ marginLeft: "8px" }} type="secondary">
+            {moment(text).format("DD/MM/YYYY HH:mm")}
+          </Text>
+        </div>
+      ),
+    },
+    {
+      title: "วันที่อัพเดท",
+      key: "updatedAt",
+      dataIndex: "updatedAt",
+      render: (text) => (
+        <div>
+          <ClockCircleOutlined />
+          <Text style={{ marginLeft: "8px" }} type="secondary">
+            {moment(text).format("DD/MM/YYYY HH:mm")}
+          </Text>
+        </div>
+      ),
+    },
+    {
+      title: "operation",
+      dataIndex: "operation",
+      render: (_, record) => {
+        const isDisabled =
+          record.status !== "รอดำเนินการ" || user.balance < record.amount;
+
+        return (
+          <div style={{ display: "flex" }}>
+            <div style={{ marginRight: "8px" }}>
+              <Popconfirm
+                title="คุณต้องการอนุมัติคำร้องใช่หรือไม่ ?"
+                onConfirm={() => console.log(record)}
+                okText="ตกลง"
+                cancelText="ยกเลิก"
+              >
+                <Button
+                  style={{
+                    color: !isDisabled ? "#3F8600" : undefined,
+                    borderColor: !isDisabled ? "#3F8600" : undefined,
+                  }}
+                  variant="outlined"
+                  disabled={isDisabled}
+                >
+                  อนุมัติ
+                </Button>
+              </Popconfirm>
+            </div>
+            <div>
+              <Popconfirm
+                title="คุณต้องการปฏิเสธคำร้องใช่หรือไม่ ?"
+                onConfirm={() => console.log(record)}
+                okText="ตกลง"
+                cancelText="ยกเลิก"
+              >
+                <Button
+                  style={{
+                    color: !isDisabled ? "#cf1322" : undefined,
+                    borderColor: !isDisabled ? "#cf1322" : undefined,
+                  }}
+                  variant="outlined"
+                  disabled={isDisabled}
+                >
+                  ปฏิเสธ
+                </Button>
+              </Popconfirm>
+            </div>
+          </div>
+        );
+      },
+    },
+  ];
+
+  const statusOptions = [
+    {
+      label: "รอดำเนินการ",
+      value: "รอดำเนินการ",
+    },
+    {
+      label: "อนุมัติ",
+      value: "อนุมัติ",
+    },
+    {
+      label: "ปฏิเสธ",
+      value: "ปฏิเสธ",
+    },
+  ];
+
+  const locale = {
+    ...en,
+    lang: {
+      ...en.lang,
+      placeholder: "เลือกวันที่",
+      rangePlaceholder: ["วันเริ่มต้น", "วันที่สิ้นสุด"],
+    },
+  };
+
   const requestReceiverReducer = useSelector(
     (state) => state.requestReceiverReducer
   );
