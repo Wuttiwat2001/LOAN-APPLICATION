@@ -6,6 +6,8 @@ const { Content } = Layout;
 //page
 import LoginPage from "../../pages/LoginPage/LoginPage";
 import RegisterPage from "../../pages/RegisterPage/RegisterPage";
+import ListRequestLoanPage from "../../pages/RequestLoanPage/ListRequestLoanPage";
+
 import TransactionPage from "../../pages/TransactionPage/TransactionPage";
 
 // guard router
@@ -74,6 +76,22 @@ const AppContent = () => {
               }}
             >
               <div>hello about us</div>
+            </Content>
+          }
+        />
+
+        <Route
+          path="/request-loan"
+          element={
+            <Content
+              style={{
+                margin: "24px 16px",
+                padding: 24,
+                background: "#fff",
+                borderRadius: "8px",
+              }}
+            >
+              <ListRequestLoanPage />
             </Content>
           }
         />
