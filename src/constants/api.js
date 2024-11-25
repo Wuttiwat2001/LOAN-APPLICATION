@@ -5,6 +5,7 @@ export const server = {
   REGISTER_URL: `auth/signup`,
   TRANSACTION_URL: `transactions`,
   USER_URL: `users`,
+  REQUEST_URL: `requests`,
 };
 
 export const SUCCESS = "SUCCESS"

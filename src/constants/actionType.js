@@ -21,3 +21,9 @@ export const USER_SUCCESS = "USER_SUCCESS";
 export const USER_FAILED = "USER_FAILED";
 export const USER_CLEAR = "USER_CLEAR";
 
+//Request
+export const REQUEST_FETCHING = "REQUEST_FETCHING";
+export const REQUEST_SUCCESS = "REQUEST_SUCCESS";
+export const REQUEST_FAILED = "REQUEST_FAILED";
+export const REQUEST_CLEAR = "REQUEST_CLEAR";
+
