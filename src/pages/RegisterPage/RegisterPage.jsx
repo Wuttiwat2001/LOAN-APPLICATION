@@ -1,9 +1,15 @@
 import React from "react";
-import { Row, Col, Typography, Card, Button, Form, Input } from "antd";
-import { MailOutlined, LockOutlined, UserOutlined } from "@ant-design/icons";
+import { Row, Col, Typography, Card, Button, Form, Input, Select } from "antd";
+import {
+  MailOutlined,
+  LockOutlined,
+  UserOutlined,
+  IdcardOutlined,
+} from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import * as registerAction from "../../redux/actions/register.action";
 import { useSelector, useDispatch } from "react-redux";
+const { Option } = Select;
 
 const RegisterPage = () => {
   const [form] = Form.useForm();
@@ -11,39 +17,44 @@ const RegisterPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const prefixSelector = (
+    <Form.Item name="prefix" noStyle>
+      <Select
+        disabled
+        style={{
+          width: 70,
+        }}
+      >
+        <Option value="66">+66</Option>
+      </Select>
+    </Form.Item>
+  );
+
   const onFinish = (values) => {
-    dispatch(registerAction.register(values, navigate));
+    const fullPhoneNumber = `+${values.prefix}${values.phone}`;
+    const dataToSubmit = {
+      ...values,
+      phone: fullPhoneNumber,
+    };
   };
 
   return (
-    <Card style={{ width: 400, height: 420 }}>
+    <Card style={{ width: 400, height: 600 }}>
       <Typography.Title
         level={3}
         style={{ textAlign: "center", marginBottom: 24 }}
       >
         ลงทะเบียนใช้งาน
       </Typography.Title>
-      <Form form={form} name="register" onFinish={onFinish} scrollToFirstError>
-        <Form.Item
-          name="email"
-          rules={[
-            {
-              type: "email",
-              message: "ข้อมูลอีเมลไม่ถูกต้อง!",
-            },
-            {
-              required: true,
-              message: "กรุณากรอกอีเมล!",
-            },
-          ]}
-        >
-          <Input
-            disabled={registerReducer.isFetching}
-            prefix={<MailOutlined />}
-            placeholder="อีเมล"
-          />
-        </Form.Item>
-
+      <Form
+        initialValues={{
+          prefix: "66",
+        }}
+        form={form}
+        name="register"
+        onFinish={onFinish}
+        scrollToFirstError
+      >
         <Form.Item
           name="username"
           rules={[{ required: true, message: "กรุณากรอกรหัสผู้ใช้งาน!" }]}
@@ -99,6 +110,76 @@ const RegisterPage = () => {
             placeholder="ยืนยันรหัสผ่าน"
           />
         </Form.Item>
+
+        <Form.Item
+          name="firstName"
+          rules={[{ required: true, message: "กรุณากรอกชื่อ!" }]}
+        >
+          <Input disabled={registerReducer.isFetching} placeholder="ชื่อ" />
+        </Form.Item>
+
+        <Form.Item
+          name="lastName"
+          rules={[{ required: true, message: "กรุณากรอกนามสกุล!" }]}
+        >
+          <Input disabled={registerReducer.isFetching} placeholder="นามสกุล" />
+        </Form.Item>
+
+        <Form.Item
+          name="email"
+          rules={[
+            {
+              type: "email",
+              message: "ข้อมูลอีเมลไม่ถูกต้อง!",
+            },
+            {
+              required: true,
+              message: "กรุณากรอกอีเมล!",
+            },
+          ]}
+        >
+          <Input
+            disabled={registerReducer.isFetching}
+            prefix={<MailOutlined />}
+            placeholder="อีเมล"
+          />
+        </Form.Item>
+
+        <Form.Item
+          name="phone"
+          rules={[
+            {
+              required: true,
+              message: "กรุณากรอกหมายเลขโทรศัพท์!",
+            },
+            {
+              validator: (_, value) => {
+                if (!value) {
+                  return Promise.resolve();
+                }
+                if (value.length !== 10) {
+                  return Promise.reject(
+                    "หมายเลขโทรศัพท์ต้องมีความยาว 10 ตัวอักษร!"
+                  );
+                }
+                if (value.startsWith("0")) {
+                  return Promise.reject(
+                    "หมายเลขโทรศัพท์ต้องไม่เริ่มต้นด้วยเลข 0!"
+                  );
+                }
+                return Promise.resolve();
+              },
+            },
+          ]}
+        >
+          <Input
+            addonBefore={prefixSelector}
+            style={{
+              width: "100%",
+            }}
+          />
+        </Form.Item>
+        <br />
         <Form.Item>
           <Row gutter={8}>
             <Col span={12}>
