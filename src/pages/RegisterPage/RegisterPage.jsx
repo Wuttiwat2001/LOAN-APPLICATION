@@ -1,10 +1,9 @@
 import React from "react";
-import { Row, Col, Typography, Card, Button, Form, Input, Select } from "antd";
+import { Alert,Row, Col, Typography, Card, Button, Form, Input, Select } from "antd";
 import {
   MailOutlined,
   LockOutlined,
   UserOutlined,
-  IdcardOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import * as registerAction from "../../redux/actions/register.action";
@@ -36,7 +35,6 @@ const RegisterPage = () => {
       ...values,
       phone: fullPhoneNumber,
     };
-
 
     dispatch(registerAction.register(dataToSubmit, navigate));
   };
@@ -161,9 +159,8 @@ const RegisterPage = () => {
                   return Promise.resolve();
                 }
                 if (value.length !== 9) {
-                  return Promise.reject(
-                    "หมายเลขโทรศัพท์ไม่ถูกต้อง!"
-                  );6
+                  return Promise.reject("หมายเลขโทรศัพท์ไม่ถูกต้อง!");
+                  6;
                 }
                 if (value.startsWith("0")) {
                   return Promise.reject(
@@ -175,6 +172,10 @@ const RegisterPage = () => {
             },
           ]}
         >
+          {registerReducer.isFailed && (
+            <Alert message="ลงทะเบียนไม่สำเร็จ" type="error" showIcon />
+          )}
+
           <Input
             addonBefore={prefixSelector}
             style={{

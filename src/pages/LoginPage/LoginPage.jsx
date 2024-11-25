@@ -1,6 +1,6 @@
 import React from "react";
-import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { Typography, Card, Button, Checkbox, Form, Input, Flex } from "antd";
+import {   LockOutlined, UserOutlined } from "@ant-design/icons";
+import { Alert,Typography, Card, Button, Checkbox, Form, Input, Flex } from "antd";
 import { useNavigate } from "react-router-dom";
 import * as loginAction from "../../redux/actions/login.action";
 import { useSelector, useDispatch } from "react-redux";
@@ -67,6 +67,14 @@ const LoginPage = () => {
             </a>
           </Flex>
         </Form.Item>
+
+        {loginReducer.isFailed && (
+          <Alert
+            message="ชื่อบัญชีผู้ใช้ หรือ รหัสผ่านไม่ถูกต้อง"
+            type="error"
+            showIcon
+          />
+        )}
 
         <Form.Item>
           <Button
