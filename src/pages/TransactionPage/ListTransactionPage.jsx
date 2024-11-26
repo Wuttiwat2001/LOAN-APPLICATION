@@ -25,7 +25,7 @@ import {
   ArrowUpOutlined,
   ArrowDownOutlined,
   RetweetOutlined,
-  SwapOutlined
+  SwapOutlined,
 } from "@ant-design/icons";
 import en from "antd/es/date-picker/locale/en_US";
 import moment from "moment";
@@ -94,10 +94,10 @@ const ListTransactionPage = () => {
       dataIndex: "type",
       key: "type",
       render: (text) => {
-        let color = "green";
-        if (text === "รอดำเนินการ") {
-          color = "orange";
-        } else if (text === "ปฏิเสธ") {
+        let color = "";
+        if (text === "ยืมเงิน" || text === "ได้รับเงินคืน") {
+          color = "green";
+        } else {
           color = "red";
         }
         return (
@@ -114,7 +114,12 @@ const ListTransactionPage = () => {
       render: (text) => {
         return (
           <div>
-            <Text style={{ marginRight: "8px" }} strong>
+            <Text
+              style={{
+                color: text < 0 ? "red" : undefined,
+              }}
+              strong
+            >
               {new Intl.NumberFormat("th-TH", {
                 style: "currency",
                 currency: "THB",
@@ -179,6 +184,39 @@ const ListTransactionPage = () => {
       <Title style={{ marginBottom: "24px", marginTop: "24px" }} level={3}>
         ธุรกรรมของฉัน
       </Title>
+
+      <Row style={{ marginBottom: "24px" }} gutter={[16, 16]}>
+        <Col xs={24} sm={24} md={12} lg={6} xl={6}>
+          <Card bordered={false}>
+            <Statistic
+              title={`รายรับ ${transactionReducer.incomeTransactions.count} รายการ`}
+              value={new Intl.NumberFormat("th-TH", {
+                style: "currency",
+                currency: "THB",
+              }).format(transactionReducer.incomeTransactions.amount)}
+              valueStyle={{
+                color: "#3f8600",
+              }}
+              prefix={<ArrowUpOutlined />}
+            ></Statistic>
+          </Card>
+        </Col>
+        <Col xs={24} sm={24} md={12} lg={6} xl={6}>
+          <Card bordered={false}>
+            <Statistic
+              title={`รายจ่าย ${transactionReducer.expenseTransactions.count} รายการ`}
+              value={new Intl.NumberFormat("th-TH", {
+                style: "currency",
+                currency: "THB",
+              }).format(transactionReducer.expenseTransactions.amount)}
+              valueStyle={{
+                color: "#cf1322",
+              }}
+              prefix={<ArrowDownOutlined />}
+            ></Statistic>
+          </Card>
+        </Col>
+      </Row>
 
       <Row style={{ marginBottom: "24px" }} gutter={[16, 16]}>
         {transactionReducer.typeCount.map((type, index) => (

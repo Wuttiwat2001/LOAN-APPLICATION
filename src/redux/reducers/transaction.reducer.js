@@ -13,6 +13,14 @@ const initialState = {
   isFetching: false,
   isFailed: false,
   errorMessage: "",
+  incomeTransactions:{
+    amount:0,
+    count:0
+  },
+  expenseTransactions:{
+    amount:0,
+    count:0
+  },
   typeCount: [
     { status: "ยืมเงิน", countType: 0 },
     { status: "ได้รับเงินคืน", countType: 0 },
@@ -30,10 +38,17 @@ export default (state = initialState, { type, payload }) => {
         page: 1,
         pageSize: 10,
         totalTransactions: 0,
-
         isFetching: true,
         isFailed: false,
         errorMessage: "",
+        incomeTransactions:{
+          amount:0,
+          count:0
+        },
+        expenseTransactions:{
+          amount:0,
+          count:0
+        },
         typeCount: [
           { status: "ยืมเงิน", countType: 0 },
           { status: "ได้รับเงินคืน", countType: 0 },
@@ -49,7 +64,8 @@ export default (state = initialState, { type, payload }) => {
         page: payload.page,
         pageSize: payload.pageSize,
         totalTransactions: payload.totalTransactions,
-
+        incomeTransactions: payload.incomeTransactions,
+        expenseTransactions:payload.expenseTransactions,
         isFetching: false,
         isFailed: false,
         errorMessage: "",
@@ -66,6 +82,14 @@ export default (state = initialState, { type, payload }) => {
         isFetching: false,
         isFailed: true,
         errorMessage: payload,
+        incomeTransactions:{
+          amount:0,
+          count:0
+        },
+        expenseTransactions:{
+          amount:0,
+          count:0
+        },
         typeCount: [
           { status: "ยืมเงิน", countType: 0 },
           { status: "ได้รับเงินคืน", countType: 0 },
@@ -83,6 +107,14 @@ export default (state = initialState, { type, payload }) => {
         isFetching: false,
         isFailed: false,
         errorMessage: "payload",
+        incomeTransactions:{
+          amount:0,
+          count:0
+        },
+        expenseTransactions:{
+          amount:0,
+          count:0
+        },
         typeCount: [
           { status: "ยืมเงิน", countType: 0 },
           { status: "ให้ยืมเงิน", countType: 0 },
