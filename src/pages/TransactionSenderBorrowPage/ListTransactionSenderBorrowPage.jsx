@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import "./TransactionSenderBorrow.css";
 import { useSelector, useDispatch } from "react-redux";
-import * as transactionSenderBorrow from "../../redux/actions/transactionSenderBorrow.action";
+import * as transactionSenderBorrowAction from "../../redux/actions/transactionSenderBorrow.action";
+import * as repayAction from "../../redux/actions/repay.action";
 import {
   Avatar,
   Card,
@@ -14,9 +15,10 @@ import {
   Row,
   Divider,
   Pagination,
-  Space,
   DatePicker,
   Statistic,
+  Popconfirm,
+  Button,
 } from "antd";
 const { Title, Text } = Typography;
 import {
@@ -47,6 +49,12 @@ const ListTransactionSenderBorrowPage = () => {
   const [searchDate, setSearchDate] = useState(["", ""]);
 
   const dispatch = useDispatch();
+
+  const repay = async (id) => {
+    await dispatch(repayAction.repay(id));
+    await dispatch(transactionSenderBorrowAction.loadTransactions(1, 10, searchText, searchDate));  
+    
+  }
 
   const columns = [
     {
@@ -146,11 +154,40 @@ const ListTransactionSenderBorrowPage = () => {
         </div>
       ),
     },
+    {
+      title: "",
+      dataIndex: "action",
+      render: (_, record) => {
+        const isDisabledPay = record.isBorrow;
+        return (
+          <div style={{ display: "flex" }}>
+            <div style={{ marginRight: "8px" }}>
+              <Popconfirm
+                title="คุณต้องการชำระเงินใช่หรือไม่ ?"
+                onConfirm={() => {
+                  repay(record.id);
+                }}
+                okText="ตกลง"
+                cancelText="ยกเลิก"
+              >
+                <Button
+                  color="primary"
+                  variant="outlined"
+                  disabled={isDisabledPay}
+                >
+                  {isDisabledPay ? "ชำระแล้ว" : "ชำระเงิน"}
+                </Button>
+              </Popconfirm>
+            </div>
+          </div>
+        );
+      },
+    },
   ];
 
   useEffect(() => {
     dispatch(
-      transactionSenderBorrow.loadTransactions(1, 10, searchText, searchDate)
+      transactionSenderBorrowAction.loadTransactions(1, 10, searchText, searchDate)
     );
   }, []);
 
@@ -163,13 +200,13 @@ const ListTransactionSenderBorrowPage = () => {
 
   const handleChangePageSize = (value) => {
     dispatch(
-      transactionSenderBorrow.loadTransactions(1, value, searchText, searchDate)
+      transactionSenderBorrowAction.loadTransactions(1, value, searchText, searchDate)
     );
   };
 
   const handleTableChange = (page, pageSize) => {
     dispatch(
-      transactionSenderBorrow.loadTransactions(
+      transactionSenderBorrowAction.loadTransactions(
         page,
         pageSize,
         searchText,
@@ -181,7 +218,7 @@ const ListTransactionSenderBorrowPage = () => {
   const onChangeDate = (date, dateString) => {
     setSearchDate(dateString);
     dispatch(
-      transactionSenderBorrow.loadTransactions(1, 10, searchText, dateString)
+      transactionSenderBorrowAction.loadTransactions(1, 10, searchText, dateString)
     );
   };
   const startItem =
@@ -285,7 +322,7 @@ const ListTransactionSenderBorrowPage = () => {
               onChange={(e) => setSearchText(e.target.value)}
               onPressEnter={() =>
                 dispatch(
-                  transactionSenderBorrow.loadTransactions(1, 10, searchText)
+                  transactionSenderBorrowAction.loadTransactions(1, 10, searchText)
                 )
               }
             />
