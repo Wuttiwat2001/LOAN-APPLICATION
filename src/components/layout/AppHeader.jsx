@@ -15,8 +15,6 @@ import {
 } from "@ant-design/icons";
 import { useSelector,useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
-import * as loginAction from "../../redux/actions/login.action";
 import PropTypes from 'prop-types';
 
 
@@ -27,6 +25,7 @@ const AppHeader = ({ collapsed, setCollapsed }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.loginReducer.user);
+  const balance = useSelector((state) => state.userReducer.balance);
 
   const onClick = ({ key }) => {
     if(key == 1){
@@ -76,7 +75,7 @@ const AppHeader = ({ collapsed, setCollapsed }) => {
               {new Intl.NumberFormat("th-TH", {
                 style: "currency",
                 currency: "THB",
-              }).format(user?.balance)}
+              }).format(balance)}
             </Title>
           </div>
 
