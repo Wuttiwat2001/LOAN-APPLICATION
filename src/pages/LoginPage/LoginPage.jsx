@@ -47,7 +47,7 @@ const LoginPage = () => {
             level={3}
             style={{  marginBottom: "0px",  color: "#fff" }}
           >
-            ยืมมั้ย
+            ยืมมั้ย !
           </Typography.Title>
           <Typography.Title   style={{  marginBottom: "24px",  color: "#fff" }} level={5}>ยินดีตอนรับสู่ยืมมั้ย</Typography.Title>
         </Col>
