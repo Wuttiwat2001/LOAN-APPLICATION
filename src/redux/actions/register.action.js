@@ -36,7 +36,7 @@ export const register = (payload, navigate) => {
         message.success("ลงทะเบียนสำเร็จ");
       } 
     } catch (error) {
-      dispatch(setRegisterFailedToState(`${error.error}`));
+      dispatch(setRegisterFailedToState(error.error));
       message.error(error.error ? `${error.error}` : "เซิร์ฟเวอร์เกิดข้อผิดพลาดโปรดลองใหม่อีกครั้งภายหลัง");
     }
   };

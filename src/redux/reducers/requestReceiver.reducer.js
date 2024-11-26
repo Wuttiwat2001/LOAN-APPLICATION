@@ -12,6 +12,7 @@ const initialState = {
   totalRequests: 0,
   isFetching: false,
   isFailed: false,
+  errorMessage: "",
   statusCount: [
     { status: "รอดำเนินการ", countStatus: 0 },
     { status: "อนุมัติ", countStatus: 0 },
@@ -30,6 +31,7 @@ export default (state = initialState, { type, payload }) => {
         totalRequests: 0,
         isFetching: true,
         isFailed: false,
+        errorMessage: "",
         statusCount: [
           { status: "รอดำเนินการ", countStatus: 0 },
           { status: "อนุมัติ", countStatus: 0 },
@@ -45,6 +47,7 @@ export default (state = initialState, { type, payload }) => {
         totalRequests: payload.totalRequests,
         isFetching: false,
         isFailed: false,
+        errorMessage: "",
         statusCount: payload.statusCount,
       };
 
@@ -57,6 +60,7 @@ export default (state = initialState, { type, payload }) => {
         totalRequests: 0,
         isFetching: false,
         isFailed: true,
+        errorMessage: payload,
         statusCount: [
           { status: "รอดำเนินการ", countStatus: 0 },
           { status: "อนุมัติ", countStatus: 0 },
@@ -72,6 +76,7 @@ export default (state = initialState, { type, payload }) => {
         totalRequests: 0,
         isFetching: false,
         isFailed: false,
+        errorMessage: "",
         statusCount: [
           { status: "รอดำเนินการ", countStatus: 0 },
           { status: "อนุมัติ", countStatus: 0 },

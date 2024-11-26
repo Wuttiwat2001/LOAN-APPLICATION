@@ -7,6 +7,7 @@ import {
 import { server, SUCCESS } from "../../constants/api";
 import store from "../store";
 import api from "../../services/api";
+import { message } from "antd";
 
 export const setRequestFetchingToState = () => ({
   type: REQUEST_RECEIVER_FETCHING,
@@ -17,8 +18,9 @@ export const setRequestSuccessToState = (payload) => ({
   payload,
 });
 
-export const setRequestFailedToState = () => ({
+export const setRequestFailedToState = (payload) => ({
   type: REQUEST_RECEIVER_FAILED,
+  payload
 });
 
 export const setRequestClearToState = () => ({
@@ -49,7 +51,12 @@ export const loadRequestReceivers = (page,pageSize,search,searchDate) => {
         dispatch(setRequestFailedToState());
       }
     } catch (error) {
-      dispatch(setRequestFailedToState());
+      dispatch(setRequestFailedToState(error));
+      message.error(
+        error.error
+          ? `${error.error}`
+          : "เซิร์ฟเวอร์เกิดข้อผิดพลาดโปรดลองใหม่อีกครั้งภายหลัง"
+      );
     }
   };
 };

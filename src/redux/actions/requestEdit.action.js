@@ -36,7 +36,7 @@ export const edit = (status, id) => {
         message.success(`${status}คำร้องสำเร็จ`);
       }
     } catch (error) {
-      dispatch(setRequestFailedToState(`${error.error}`));
+      dispatch(setRequestFailedToState(error.error));
       message.error(
         error.error
           ? `${error.error}`
