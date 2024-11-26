@@ -101,7 +101,11 @@ const RegisterPage = () => {
           >
             <Form.Item
               name="username"
-              rules={[{ required: true, message: "กรุณากรอกรหัสผู้ใช้งาน!" }]}
+              rules={[
+                { required: true, message: "กรุณากรอกรหัสผู้ใช้งาน!" },
+                { min: 4, message: "รหัสผู้ใช้งานต้องมีอย่างน้อย 4 ตัวอักษร!" },
+                { max: 20, message: "รหัสผู้ใช้งานต้องไม่เกิน 20 ตัวอักษร!" },
+              ]}
             >
               <Input
                 disabled={registerReducer.isFetching}
@@ -116,6 +120,10 @@ const RegisterPage = () => {
                 {
                   required: true,
                   message: "กรุณากรอกรหัสผ่าน!",
+                },
+                {
+                  min: 8,
+                  message: "รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร!",
                 },
               ]}
               hasFeedback
