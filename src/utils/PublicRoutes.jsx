@@ -30,7 +30,7 @@ const PublicRoutes = () => {
     );
   }
 
-  return isLogin ? <Navigate to="/home" /> : <Outlet />;
+  return isLogin ? <Navigate to="/" /> : <Outlet />;
 };
 
 export default PublicRoutes;
