@@ -32,25 +32,6 @@ import moment from "moment";
 const { RangePicker } = DatePicker;
 
 const ListTransactionPage = () => {
-  const TypeOptions = [
-    {
-      label: "ได้รับเงินคืน",
-      value: "ได้รับเงินคืน",
-    },
-    {
-      label: "ยืมเงิน",
-      value: "ยืมเงิน",
-    },
-    {
-      label: "ให้ยืมเงิน",
-      value: "ให้ยืมเงิน",
-    },
-    {
-      label: "คืนเงิน",
-      value: "คืนเงิน",
-    },
-  ];
-
   const locale = {
     ...en,
     lang: {
@@ -171,7 +152,6 @@ const ListTransactionPage = () => {
     setSearchDate(dateString);
     dispatch(transactionAction.loadTransactions(1, 10, searchText, dateString));
   };
-
   const startItem =
     (transactionReducer.page - 1) * transactionReducer.pageSize + 1;
   const endItem = Math.min(
@@ -275,22 +255,6 @@ const ListTransactionPage = () => {
             paddingRight: "24px",
           }}
         >
-          <Col xs={24} sm={24} md={12} lg={8} xl={8}>
-            <Select
-              mode="multiple"
-              style={{
-                width: "100%",
-              }}
-              defaultValue={[]}
-              placeholder="กรองตามประเภท"
-              options={TypeOptions}
-              optionRender={(option) => (
-                <Space>
-                  <span>{option.data.label}</span>
-                </Space>
-              )}
-            />
-          </Col>
 
           <Col xs={24} sm={24} md={12} lg={8} xl={8}>
             <RangePicker

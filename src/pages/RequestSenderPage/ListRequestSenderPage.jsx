@@ -112,22 +112,6 @@ const columns = [
     ),
   },
 ];
-
-const statusOptions = [
-  {
-    label: "รอดำเนินการ",
-    value: "รอดำเนินการ",
-  },
-  {
-    label: "อนุมัติ",
-    value: "อนุมัติ",
-  },
-  {
-    label: "ปฏิเสธ",
-    value: "ปฏิเสธ",
-  },
-];
-
 const locale = {
   ...en,
   lang: {
@@ -254,22 +238,7 @@ const ListRequestSenderPage = () => {
             paddingRight: "24px",
           }}
         >
-          <Col xs={24} sm={24} md={12} lg={8} xl={8}>
-            <Select
-              mode="multiple"
-              style={{
-                width: "100%",
-              }}
-              defaultValue={[]}
-              placeholder="กรองตามสถานะ"
-              options={statusOptions}
-              optionRender={(option) => (
-                <Space>
-                  <span>{option.data.label}</span>
-                </Space>
-              )}
-            />
-          </Col>
+        
 
           <Col xs={24} sm={24} md={12} lg={8} xl={8}>
             <RangePicker

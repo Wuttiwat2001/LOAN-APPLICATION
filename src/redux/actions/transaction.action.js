@@ -36,7 +36,7 @@ export const loadTransactions = (page,pageSize,search,searchDate) => {
         const response = await api.post(`${server.TRANSACTION_URL}?page=${page}&pageSize${pageSize}`,{
           userId: userId,
           search: search,
-          searchDate: searchDate
+          searchDate: searchDate,
         });
         if ((response.data.message === SUCCESS)) {
           dispatch(setTransactionSuccessToState(response.data));

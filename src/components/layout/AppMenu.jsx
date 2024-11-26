@@ -34,11 +34,6 @@ const AppMenu = ({ collapsed }) => {
         }}
         items={[
           {
-            key: "/",
-            icon: <HomeOutlined />,
-            label: "หน้าหลัก",
-          },
-          {
             key: "/request-sender",
             icon: <FileAddOutlined />,
             label: "ขอยืมเงิน",

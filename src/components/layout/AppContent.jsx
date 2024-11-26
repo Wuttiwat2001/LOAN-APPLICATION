@@ -52,22 +52,6 @@ const AppContent = () => {
 
       <Route element={<ProtectedRoutes />}>
         <Route
-          path="/"
-          element={
-            <Content
-              style={{
-                display: "flex",
-                margin: "24px 16px",
-                padding: 24,
-                background: "#fff",
-                borderRadius: "8px",
-              }}
-            >
-              <div>hello</div>
-            </Content>
-          }
-        />
-        <Route
           path="/request-receiver"
           element={
             <Content

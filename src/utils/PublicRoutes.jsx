@@ -30,7 +30,7 @@ const PublicRoutes = () => {
     );
   }
 
-  return isLogin ? <Navigate to="/" /> : <Outlet />;
+  return isLogin ? <Navigate to="/request-sender" /> : <Outlet />;
 };
 
 export default PublicRoutes;
