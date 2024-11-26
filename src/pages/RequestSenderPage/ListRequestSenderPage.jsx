@@ -137,7 +137,7 @@ const locale = {
   },
 };
 
-const RequestLoanPage = () => {
+const ListRequestSenderPage = () => {
   const requestSenderReducer = useSelector(
     (state) => state.requestSenderReducer
   );
@@ -389,4 +389,4 @@ const RequestLoanPage = () => {
   );
 };
 
-export default RequestLoanPage;
+export default ListRequestSenderPage;
