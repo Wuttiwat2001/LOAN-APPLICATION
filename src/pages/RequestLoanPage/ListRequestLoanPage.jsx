@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./RequestLoan.css";
 import { useSelector, useDispatch } from "react-redux";
 import CreateRequestLoanPage from "./CreateRequestLoanPage";
@@ -151,12 +151,10 @@ const RequestLoanPage = () => {
     );
   }, []);
 
-  const dataSourceWithKeys = requestSenderReducer.requests.map(
-    (request, index) => ({
-      ...request,
-      key: request.id,
-    })
-  );
+  const dataSourceWithKeys = requestSenderReducer.requests.map((request) => ({
+    ...request,
+    key: request.id,
+  }));
 
   const handleChangePageSize = (value) => {
     dispatch(
@@ -201,9 +199,9 @@ const RequestLoanPage = () => {
         ขอยืมเงิน
       </Title>
 
-      <Row style={{ marginBottom: "24px" }} gutter={16}>
+      <Row style={{ marginBottom: "24px" }} gutter={[16, 16]}>
         {requestSenderReducer.statusCount.map((status, index) => (
-          <Col span={8} key={index}>
+          <Col xs={24} sm={24} md={12} lg={8} xl={8} key={index}>
             <Card bordered={false}>
               <Statistic
                 title={status.status}
@@ -249,14 +247,14 @@ const RequestLoanPage = () => {
           </Col>
         </Row>
         <Row
-          gutter={[8]}
+          gutter={[16, 16]}
           style={{
             marginBottom: "24px",
             paddingLeft: "24px",
             paddingRight: "24px",
           }}
         >
-          <Col span={8}>
+          <Col xs={24} sm={24} md={12} lg={8} xl={8}>
             <Select
               mode="multiple"
               style={{
@@ -273,7 +271,7 @@ const RequestLoanPage = () => {
             />
           </Col>
 
-          <Col span={8}>
+          <Col xs={24} sm={24} md={12} lg={8} xl={8}>
             <RangePicker
               onChange={onChangeDate}
               style={{
@@ -285,20 +283,14 @@ const RequestLoanPage = () => {
         </Row>
         <Divider style={{ marginTop: "0px" }} />
         <Row
+          gutter={[16, 16]}
           style={{
             marginBottom: "24px",
             paddingLeft: "24px",
             paddingRight: "24px",
           }}
         >
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-            span={24}
-          >
+          <Col xs={24} sm={24} md={12} lg={12} xl={12}>
             <Input
               style={{ width: "400px" }}
               placeholder="ค้นหาข้อมูลในตาราง"
@@ -311,30 +303,41 @@ const RequestLoanPage = () => {
                 )
               }
             />
-            <div style={{ display: "flex", marginLeft: "auto" }}>
-              <Select
-                defaultValue={10}
-                style={{
-                  width: 120,
-                  marginRight: "8px",
-                }}
-                onChange={handleChangePageSize}
-                options={[
-                  {
-                    value: 10,
-                    label: 10,
-                  },
-                  {
-                    value: 20,
-                    label: 20,
-                  },
-                  {
-                    value: 50,
-                    label: 50,
-                  },
-                ]}
-              />
-            </div>
+          </Col>
+
+          <Col
+            style={{
+              display: "flex",
+              alignItems: "end",
+            }}
+            xs={24}
+            sm={24}
+            md={12}
+            lg={12}
+            xl={12}
+          >
+            <Select
+              defaultValue={10}
+              style={{
+                width: 120,
+                marginRight: "8px",
+              }}
+              onChange={handleChangePageSize}
+              options={[
+                {
+                  value: 10,
+                  label: 10,
+                },
+                {
+                  value: 20,
+                  label: 20,
+                },
+                {
+                  value: 50,
+                  label: 50,
+                },
+              ]}
+            />
           </Col>
         </Row>
 
