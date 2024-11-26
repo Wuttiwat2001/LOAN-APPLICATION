@@ -222,6 +222,7 @@ const RegisterPage = () => {
               )}
 
               <Input
+                disabled={registerReducer.isFetching}
                 addonBefore={prefixSelector}
                 style={{
                   width: "100%",

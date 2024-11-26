@@ -4,6 +4,7 @@ import {
   REGISTER_SUCCESS,
 } from "./../../constants/actionType";
 import { server, SUCCESS } from "./../../constants/api";
+import { message } from "antd";
 
 import api from "../../services/api";
 
@@ -16,7 +17,10 @@ export const setRegisterSuccessToState = (payload) => ({
   payload,
 });
 
-export const setRegisterFailedToState = () => ({ type: REGISTER_FAILED });
+export const setRegisterFailedToState = (payload) => ({
+  type: REGISTER_FAILED,
+  payload,
+});
 
 export const register = (payload, navigate) => {
   return async (dispatch) => {
@@ -29,11 +33,13 @@ export const register = (payload, navigate) => {
       if ((response.data.message = SUCCESS)) {
         dispatch(setRegisterSuccessToState(response.data.user));
         navigate("/login");
+        message.success("ลงทะเบียนสำเร็จ");
       } else {
         dispatch(setRegisterFailedToState());
       }
     } catch (error) {
-      dispatch(setRegisterFailedToState());
+      dispatch(setRegisterFailedToState(`${error.error}`));
+      message.error(error.error ? `${error.error}` : "เซิร์ฟเวอร์เกิดข้อผิดพลาดโปรดลองใหม่อีกครั้งภายหลัง");
     }
   };
 };
