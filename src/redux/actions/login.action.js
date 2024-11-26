@@ -4,6 +4,9 @@ import {
   LOGIN_FAILED,
   LOGOUT,
 } from "./../../constants/actionType";
+import {
+  message
+} from "antd";
 
 import { server, ACCESS_TOKEN, USER, SUCCESS } from "./../../constants/api";
 
@@ -18,8 +21,9 @@ export const setLoginSuccessToState = (payload) => ({
   payload,
 });
 
-export const setLoginFailedToState = () => ({
+export const setLoginFailedToState = (payload) => ({
   type: LOGIN_FAILED,
+  payload
 });
 
 export const setLogoutToState = () => ({
@@ -40,11 +44,11 @@ export const login = (payload, navigate) => {
         localStorage.setItem(USER, JSON.stringify(response.data.user));
         dispatch(setLoginSuccessToState(response.data.user));
         navigate("/");
-      } else {
-        dispatch(setLoginFailedToState());
-      }
+        message.success("เข้าสู่ระบบสำเร็จ");
+      } 
     } catch (error) {
-      dispatch(setLoginFailedToState());
+      dispatch(setLoginFailedToState(error.error));
+      message.error(`${error.error}`);
     }
   };
 };
@@ -68,5 +72,6 @@ export const logout = (navigate) => {
     await localStorage.removeItem(USER);
     dispatch(setLogoutToState());
     navigate("/login");
+    message.success("ออกจากระบบสำเร็จ");
   };
 };

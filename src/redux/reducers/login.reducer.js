@@ -10,6 +10,7 @@ const initialState = {
   isFetching: false,
   isFailed: false,
   isLogin: false,
+  errorMessage: "",
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -21,6 +22,7 @@ export default (state = initialState, { type, payload }) => {
         isFetching: true,
         isFailed: false,
         isLogin: false,
+        errorMessage: "",
       };
     case LOGIN_SUCCESS:
       return {
@@ -29,6 +31,7 @@ export default (state = initialState, { type, payload }) => {
         isFetching: false,
         isFailed: false,
         isLogin: true,
+        errorMessage: "",
       };
     case LOGIN_FAILED:
       return {
@@ -37,6 +40,7 @@ export default (state = initialState, { type, payload }) => {
         isFetching: false,
         isFailed: true,
         isLogin: false,
+        errorMessage: payload
       };
     case LOGOUT:
       return {
@@ -45,6 +49,7 @@ export default (state = initialState, { type, payload }) => {
         isFetching: false,
         isFailed: false,
         isLogin: false,
+        errorMessage: "",
       };
     default:
       return state;
