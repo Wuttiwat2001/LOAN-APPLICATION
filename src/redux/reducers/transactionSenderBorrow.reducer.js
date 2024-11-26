@@ -1,5 +1,5 @@
 import {
-  TRANSACTION_SEDER_BORROW_FETCHING,
+  TRANSACTION_SENDER_BORROW_FETCHING,
   TRANSACTION_SEDER_BORROW_SUCCESS,
   TRANSACTION_SEDER_BORROW_FAILED,
   TRANSACTION_SEDER_BORROW_CLEAR,
@@ -19,7 +19,7 @@ const initialState = {
 
 export default (state = initialState, { type, payload }) => {
   switch (type) {
-    case TRANSACTION_SEDER_BORROW_FETCHING:
+    case TRANSACTION_SENDER_BORROW_FETCHING:
       return {
         ...state,
         transactions: [],

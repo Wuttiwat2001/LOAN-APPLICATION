@@ -1,5 +1,5 @@
 import {
-  TRANSACTION_SEDER_BORROW_FETCHING,
+  TRANSACTION_SENDER_BORROW_FETCHING,
   TRANSACTION_SEDER_BORROW_SUCCESS,
   TRANSACTION_SEDER_BORROW_FAILED,
   TRANSACTION_SEDER_BORROW_CLEAR,
@@ -11,7 +11,7 @@ import api from "../../services/api";
 import { message } from "antd";
 
 export const setTransactionFetchingToState = () => ({
-  type: TRANSACTION_SEDER_BORROW_FETCHING,
+  type: TRANSACTION_SENDER_BORROW_FETCHING,
 });
 
 export const setTransactionSuccessToState = (payload) => ({
