@@ -3,6 +3,7 @@ import "./RequestReceiver.css";
 import { useSelector, useDispatch } from "react-redux";
 import * as requestReceiverAction from "../../redux/actions/requestReceiver.action";
 import * as requestEdit from "../../redux/actions/requestEdit.action";
+import * as userAction from "../../redux/actions/user.action";
 import {
   Avatar,
   Card,
@@ -49,7 +50,7 @@ const ListRequestReceiverPage = () => {
   const requestReceiverReducer = useSelector(
     (state) => state.requestReceiverReducer
   );
-  const user = useSelector((state) => state.loginReducer.user);
+  const balance = useSelector((state) => state.userReducer.balance);
 
   const [searchText, setSearchText] = useState("");
   const [searchDate, setSearchDate] = useState(["", ""]);
@@ -62,6 +63,7 @@ const ListRequestReceiverPage = () => {
     await dispatch(
       requestReceiverAction.loadRequestReceivers(1, 10, searchText, searchDate)
     );
+    await dispatch(userAction.loadUserBalance());
   };
 
   const rejectRequest = async (status, id) => {
@@ -117,7 +119,7 @@ const ListRequestReceiverPage = () => {
       key: "amount",
       dataIndex: "amount",
       render: (text, record) => {
-        const warningIcon = user.balance < record.amount;
+        const warningIcon = balance < record.amount;
         return (
           <div>
             <Text style={{ marginRight: "8px" }} strong>
@@ -170,7 +172,7 @@ const ListRequestReceiverPage = () => {
       dataIndex: "action",
       render: (_, record) => {
         const isDisabledApprove =
-          record.status !== "รอดำเนินการ" || user.balance < record.amount;
+          record.status !== "รอดำเนินการ" || balance < record.amount;
         const isDisabledReject = record.status !== "รอดำเนินการ";
 
         return (

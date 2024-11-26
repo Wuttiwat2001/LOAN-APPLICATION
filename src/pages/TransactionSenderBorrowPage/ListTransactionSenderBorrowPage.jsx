@@ -3,6 +3,7 @@ import "./TransactionSenderBorrow.css";
 import { useSelector, useDispatch } from "react-redux";
 import * as transactionSenderBorrowAction from "../../redux/actions/transactionSenderBorrow.action";
 import * as repayAction from "../../redux/actions/repay.action";
+import * as userAction from "../../redux/actions/user.action";
 import {
   Avatar,
   Card,
@@ -52,9 +53,12 @@ const ListTransactionSenderBorrowPage = () => {
 
   const repay = async (id) => {
     await dispatch(repayAction.repay(id));
-    await dispatch(transactionSenderBorrowAction.loadTransactions(1, 10, searchText, searchDate));  
+    await dispatch(transactionSenderBorrowAction.loadTransactions(1, 10, searchText, searchDate));
+    await dispatch(userAction.loadUserBalance());  
     
   }
+
+  const balance = useSelector((state) => state.userReducer.balance);
 
   const columns = [
     {
@@ -158,7 +162,7 @@ const ListTransactionSenderBorrowPage = () => {
       title: "",
       dataIndex: "action",
       render: (_, record) => {
-        const isDisabledPay = record.isBorrow;
+        const isDisabledPay = record.isBorrow || balance < record.amount;
         return (
           <div style={{ display: "flex" }}>
             <div style={{ marginRight: "8px" }}>
