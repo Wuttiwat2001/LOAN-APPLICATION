@@ -8,7 +8,7 @@ import RegisterPage from "../../pages/RegisterPage/RegisterPage";
 import ListRequestSenderPage from "../../pages/RequestSenderPage/ListRequestSenderPage";
 import ListRequestReceiverPage from "../../pages/RequestReceiverPage/ListRequestReceiverPage";
 
-import TransactionPage from "../../pages/TransactionPage/TransactionPage";
+import ListTransactionPage from "../../pages/TransactionPage/ListTransactionPage";
 
 // guard router
 import PublicRoutes from "../../utils/PublicRoutes";
@@ -109,13 +109,15 @@ const AppContent = () => {
             <Content
               style={{
                 display: "flex",
+                flexDirection: "column",
                 margin: "24px 16px",
                 padding: 24,
                 background: "#fff",
                 borderRadius: "8px",
+                overflow: "auto",
               }}
             >
-              {<TransactionPage />}
+              {<ListTransactionPage />}
             </Content>
           }
         />
