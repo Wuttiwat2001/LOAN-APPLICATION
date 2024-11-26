@@ -3,6 +3,9 @@ import {
   USER_SUCCESS,
   USER_FAILED,
   USER_CLEAR,
+  USER_BALANCE_FETCHING,
+  USER_BALANCE_SUCCESS,
+  USER_BALANCE_FAILED,
 } from "./../../constants/actionType";
 
 const initialState = {
@@ -27,6 +30,12 @@ export default (state = initialState, { type, payload }) => {
       return { ...state, users: [], isFetching: false, isFailed: true };
     case USER_CLEAR:
       return { ...state, users: [], isFetching: false, isFailed: false };
+    case USER_BALANCE_FETCHING:
+      return { ...state, balance: 0 };
+    case USER_BALANCE_SUCCESS:
+      return { ...state, balance: payload.balance };
+    case USER_BALANCE_FAILED:
+      return { ...state, balance: 0, isFailed: true };
 
     default:
       return state;
