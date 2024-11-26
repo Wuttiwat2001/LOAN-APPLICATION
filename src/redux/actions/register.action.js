@@ -30,7 +30,7 @@ export const register = (payload, navigate) => {
       const response = await api.post(server.REGISTER_URL, {
         ...payload,
       });
-      if ((response.data.message = SUCCESS)) {
+      if ((response.data.message === SUCCESS)) {
         dispatch(setRegisterSuccessToState(response.data.user));
         navigate("/login");
         message.success("ลงทะเบียนสำเร็จ");

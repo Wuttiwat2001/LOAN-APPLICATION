@@ -31,7 +31,7 @@ export const edit = (status, id) => {
           status: status,
         }
       );
-      if ((response.data.message = SUCCESS)) {
+      if ((response.data.message === SUCCESS)) {
         dispatch(setRequestSuccessToState());
         message.success(`${status}คำร้องสำเร็จ`);
       }

@@ -27,7 +27,7 @@ export const loadUsers = () => {
     try {
       dispatch(setUserFetchingToState());
       const response = await api.get(server.USER_URL);
-      if ((response.data.message = SUCCESS)) {
+      if ((response.data.message === SUCCESS)) {
         dispatch(setUserSuccessToState(response.data.users));
       } else {
         dispatch(setUserFailedToState());
