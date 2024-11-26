@@ -8,6 +8,7 @@ import createRequestBorrowReducer from "./createRequestBorrow.reducer";
 import requestSenderReducer from "./requestSender.reducer";
 import requestReceiverReducer from "./requestReceiver.reducer";
 import requestEditReducer from "./requestEdit.reducer";
+import repayReducer from "./repay.reducer";
 
 
 const rootReducer = combineReducers({
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
   requestSenderReducer,
   requestReceiverReducer,
   requestEditReducer,
+  repayReducer
 });
 
 export default rootReducer;
