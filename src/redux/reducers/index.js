@@ -3,6 +3,7 @@ import loginReducer from "./login.reducer";
 import registerReducer from "./register.reducer";
 import transactionReducer from "./transaction.reducer";
 import transactionSenderBorrowReducer from "./transactionSenderBorrow.reducer";
+import transactionReceiverBorrowReducer from "./transactionReceiverBorrow.reducer";
 import userReducer from "./user.reducer";
 import createRequestBorrowReducer from "./createRequestBorrow.reducer";
 import requestSenderReducer from "./requestSender.reducer";
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
   registerReducer,
   transactionReducer,
   transactionSenderBorrowReducer,
+  transactionReceiverBorrowReducer,
   userReducer,
   createRequestBorrowReducer,
   requestSenderReducer,
