@@ -3,10 +3,11 @@ import {
   HomeOutlined,
   FileAddOutlined,
   MailOutlined,
+  UserSwitchOutlined,
   HistoryOutlined,
 } from "@ant-design/icons";
 import { useNavigate, useLocation } from "react-router-dom";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 const { Sider } = Layout;
 
@@ -20,12 +21,15 @@ const AppMenu = ({ collapsed }) => {
 
   return (
     <Sider trigger={null} collapsible collapsed={collapsed}>
-      <div className="demo-logo-vertical" />
+      
+      
+
       <Menu
         mode="inline"
         selectedKeys={[location.pathname]}
         onClick={handleMenuClick}
         style={{
+          marginBottom: "0px",
           height: "100%",
         }}
         items={[
@@ -38,6 +42,11 @@ const AppMenu = ({ collapsed }) => {
             key: "/request-sender",
             icon: <FileAddOutlined />,
             label: "ขอยืมเงิน",
+          },
+          {
+            key: "/repay",
+            icon: <UserSwitchOutlined />,
+            label: "คืนเงิน",
           },
           {
             key: "/request-receiver",
