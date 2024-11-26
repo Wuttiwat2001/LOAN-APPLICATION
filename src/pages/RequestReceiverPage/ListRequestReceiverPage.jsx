@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import "./RequestReceiver.css";
 import { useSelector, useDispatch } from "react-redux";
 import * as requestReceiverAction from "../../redux/actions/requestReceiver.action";
