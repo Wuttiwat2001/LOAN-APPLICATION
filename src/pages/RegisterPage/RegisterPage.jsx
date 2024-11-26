@@ -36,10 +36,9 @@ const RegisterPage = () => {
   );
 
   const onFinish = (values) => {
-    const fullPhoneNumber = `+${values.prefix}${values.phone}`;
     const dataToSubmit = {
       ...values,
-      phone: fullPhoneNumber,
+      prefix: values.prefix,
     };
 
     dispatch(registerAction.register(dataToSubmit, navigate));
