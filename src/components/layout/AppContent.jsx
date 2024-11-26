@@ -5,7 +5,7 @@ const { Content } = Layout;
 //page
 import LoginPage from "../../pages/LoginPage/LoginPage";
 import RegisterPage from "../../pages/RegisterPage/RegisterPage";
-import ListRequestLoanPage from "../../pages/RequestLoanPage/ListRequestLoanPage";
+import ListRequestSenderPage from "../../pages/RequestSenderPage/ListRequestSenderPage";
 import ListRequestReceiverPage from "../../pages/RequestReceiverPage/ListRequestReceiverPage";
 
 import TransactionPage from "../../pages/TransactionPage/TransactionPage";
@@ -98,7 +98,7 @@ const AppContent = () => {
                 overflow: "auto",
               }}
             >
-              <ListRequestLoanPage />
+              <ListRequestSenderPage />
             </Content>
           }
         />
