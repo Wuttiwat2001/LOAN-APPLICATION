@@ -106,7 +106,7 @@ export default (state = initialState, { type, payload }) => {
         totalTransactions: 0,
         isFetching: false,
         isFailed: false,
-        errorMessage: "payload",
+        errorMessage: "",
         incomeTransactions:{
           amount:0,
           count:0
