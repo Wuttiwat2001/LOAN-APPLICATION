@@ -11,6 +11,7 @@ import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
   WalletOutlined,
+  LogoutOutlined
 } from "@ant-design/icons";
 import { useSelector,useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -34,8 +35,9 @@ const AppHeader = ({ collapsed, setCollapsed }) => {
   };
   const items = [
     {
-      label: "ออกจากระบบ",
-      key: "1",
+      key: '1',
+      label: 'ออกจากระบบ',
+      icon: <LogoutOutlined />,
     },
   ];
 
