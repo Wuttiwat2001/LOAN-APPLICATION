@@ -15,8 +15,9 @@ export const setRequestSuccessToState = () => ({
   type: REQUEST_SUCCESS,
 });
 
-export const setRequestFailedToState = () => ({
+export const setRequestFailedToState = (payload) => ({
   type: REQUEST_FAILED,
+  payload
 });
 
 export const createRequestBorrow = (payload) => {
@@ -30,11 +31,9 @@ export const createRequestBorrow = (payload) => {
 
       if (response.data.message === SUCCESS) {
         dispatch(setRequestSuccessToState());
-      } else {
-        dispatch(setRequestFailedToState());
       }
     } catch (error) {
-      dispatch(setRequestFailedToState());
+      dispatch(setRequestFailedToState(error));
     }
   };
 };

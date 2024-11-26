@@ -6,18 +6,23 @@ import {
 
 const initialState = {
   isFetching: false,
-  isSuccess: false,
   isFailed: false,
+  errorMessage: "",
 };
 
-export default (state = initialState, { type }) => {
+export default (state = initialState, { type, payload }) => {
   switch (type) {
     case REQUEST_FETCHING:
-      return { ...state, isFetching: true, isSuccess: false, isError: false };
+      return { ...state, isFetching: true, isError: false, errorMessage: "" };
     case REQUEST_SUCCESS:
-      return { ...state, isFetching: false, isSuccess: true, isError: false };
+      return { ...state, isFetching: false, isError: false, errorMessage: "" };
     case REQUEST_FAILED:
-      return { ...state, isFetching: false, isSuccess: false, isError: true };
+      return {
+        ...state,
+        isFetching: false,
+        isError: true,
+        errorMessage: payload,
+      };
     default:
       return state;
   }
