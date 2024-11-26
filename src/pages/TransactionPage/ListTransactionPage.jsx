@@ -76,7 +76,7 @@ const ListTransactionPage = () => {
       key: "type",
       render: (text) => {
         let color = "";
-        if (text === "ยืมเงิน" || text === "ได้รับเงินคืน") {
+        if (text === "ได้รับคืนเงิน" || text === "ยืมเงิน") {
           color = "green";
         } else {
           color = "red";
@@ -167,7 +167,7 @@ const ListTransactionPage = () => {
 
       <Row style={{ marginBottom: "24px" }} gutter={[16, 16]}>
         <Col xs={24} sm={24} md={12} lg={6} xl={6}>
-          <Card bordered={false}>
+          <Card>
             <Statistic
               title={`รายรับ ${transactionReducer.incomeTransactions.count} รายการ`}
               value={new Intl.NumberFormat("th-TH", {
@@ -182,7 +182,7 @@ const ListTransactionPage = () => {
           </Card>
         </Col>
         <Col xs={24} sm={24} md={12} lg={6} xl={6}>
-          <Card bordered={false}>
+          <Card>
             <Statistic
               title={`รายจ่าย ${transactionReducer.expenseTransactions.count} รายการ`}
               value={new Intl.NumberFormat("th-TH", {
@@ -201,7 +201,7 @@ const ListTransactionPage = () => {
       <Row style={{ marginBottom: "24px" }} gutter={[16, 16]}>
         {transactionReducer.typeCount.map((type, index) => (
           <Col xs={24} sm={24} md={12} lg={6} xl={6} key={index}>
-            <Card bordered={false}>
+            <Card>
               <Statistic
                 title={type.type}
                 value={`${type.countType} รายการ`}
@@ -255,7 +255,6 @@ const ListTransactionPage = () => {
             paddingRight: "24px",
           }}
         >
-
           <Col xs={24} sm={24} md={12} lg={8} xl={8}>
             <RangePicker
               onChange={onChangeDate}

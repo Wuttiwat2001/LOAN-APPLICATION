@@ -281,7 +281,7 @@ const ListRequestReceiverPage = () => {
       <Row style={{ marginBottom: "24px" }} gutter={[16, 16]}>
         {requestReceiverReducer.statusCount.map((status, index) => (
           <Col xs={24} sm={24} md={12} lg={8} xl={8} key={index}>
-            <Card bordered={false}>
+            <Card>
               <Statistic
                 title={status.status}
                 value={`${status.countStatus} รายการ`}

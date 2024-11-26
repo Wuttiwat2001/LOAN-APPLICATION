@@ -239,7 +239,7 @@ const ListTransactionSenderBorrowPage = () => {
 
       <Row style={{ marginBottom: "24px" }} gutter={[16, 16]}>
         <Col xs={24} sm={24} md={12} lg={6} xl={6}>
-          <Card bordered={false}>
+          <Card>
             <Statistic
               title={`ชำระแล้ว ${transactionSenderBorrowReducer.paidTransactions.count} รายการ`}
               value={new Intl.NumberFormat("th-TH", {
@@ -254,7 +254,7 @@ const ListTransactionSenderBorrowPage = () => {
           </Card>
         </Col>
         <Col xs={24} sm={24} md={12} lg={6} xl={6}>
-          <Card bordered={false}>
+          <Card>
             <Statistic
               title={`ค้างชำระ ${transactionSenderBorrowReducer.outstandingTransactions.count} รายการ`}
               value={new Intl.NumberFormat("th-TH", {
