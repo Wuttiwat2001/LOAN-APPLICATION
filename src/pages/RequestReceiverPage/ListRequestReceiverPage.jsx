@@ -1,7 +1,8 @@
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./RequestReceiver.css";
 import { useSelector, useDispatch } from "react-redux";
 import * as requestReceiverAction from "../../redux/actions/requestReceiver.action";
+import * as requestEdit from "../../redux/actions/requestEdit.action";
 import {
   Avatar,
   Card,
@@ -34,7 +35,56 @@ import moment from "moment";
 const { RangePicker } = DatePicker;
 
 const ListRequestReceiverPage = () => {
+
+  const statusOptions = [
+    {
+      label: "รอดำเนินการ",
+      value: "รอดำเนินการ",
+    },
+    {
+      label: "อนุมัติ",
+      value: "อนุมัติ",
+    },
+    {
+      label: "ปฏิเสธ",
+      value: "ปฏิเสธ",
+    },
+  ];
+
+  const locale = {
+    ...en,
+    lang: {
+      ...en.lang,
+      placeholder: "เลือกวันที่",
+      rangePlaceholder: ["วันเริ่มต้น", "วันที่สิ้นสุด"],
+    },
+  };
+
+  const requestReceiverReducer = useSelector(
+    (state) => state.requestReceiverReducer
+  );
   const user = useSelector((state) => state.loginReducer.user);
+
+  const [searchText, setSearchText] = useState("");
+  const [searchDate, setSearchDate] = useState(["", ""]);
+
+  const dispatch = useDispatch();
+
+  
+  const approveRequest = async (status, id) => {
+    await dispatch(requestEdit.edit(status, id));
+    await dispatch(
+      requestReceiverAction.loadRequestReceivers(1, 10, searchText, searchDate)
+    );
+  };
+
+  const rejectRequest = async (status, id) => {
+    await dispatch(requestEdit.edit(status, id));
+    await dispatch(
+      requestReceiverAction.loadRequestReceivers(1, 10, searchText, searchDate)
+    );
+  };
+
 
   const columns = [
     {
@@ -77,10 +127,10 @@ const ListRequestReceiverPage = () => {
       },
     },
     {
-      title: "Amount",
+      title: "จำนวน",
       key: "amount",
       dataIndex: "amount",
-      render: (text,record) => {
+      render: (text, record) => {
         const warningIcon = user.balance < record.amount;
         return (
           <div>
@@ -130,8 +180,8 @@ const ListRequestReceiverPage = () => {
       ),
     },
     {
-      title: "operation",
-      dataIndex: "operation",
+      title: "",
+      dataIndex: "action",
       render: (_, record) => {
         const isDisabledApprove =
           record.status !== "รอดำเนินการ" || user.balance < record.amount;
@@ -142,7 +192,9 @@ const ListRequestReceiverPage = () => {
             <div style={{ marginRight: "8px" }}>
               <Popconfirm
                 title="คุณต้องการอนุมัติคำร้องใช่หรือไม่ ?"
-                onConfirm={() => console.log(record)}
+                onConfirm={() => {
+                  approveRequest("อนุมัติ", record.id);
+                }}
                 okText="ตกลง"
                 cancelText="ยกเลิก"
               >
@@ -161,7 +213,9 @@ const ListRequestReceiverPage = () => {
             <div>
               <Popconfirm
                 title="คุณต้องการปฏิเสธคำร้องใช่หรือไม่ ?"
-                onConfirm={() => console.log(record)}
+                onConfirm={() => {
+                  rejectRequest("ปฏิเสธ", record.id);
+                }}
                 okText="ตกลง"
                 cancelText="ยกเลิก"
               >
@@ -183,49 +237,16 @@ const ListRequestReceiverPage = () => {
     },
   ];
 
-  const statusOptions = [
-    {
-      label: "รอดำเนินการ",
-      value: "รอดำเนินการ",
-    },
-    {
-      label: "อนุมัติ",
-      value: "อนุมัติ",
-    },
-    {
-      label: "ปฏิเสธ",
-      value: "ปฏิเสธ",
-    },
-  ];
-
-  const locale = {
-    ...en,
-    lang: {
-      ...en.lang,
-      placeholder: "เลือกวันที่",
-      rangePlaceholder: ["วันเริ่มต้น", "วันที่สิ้นสุด"],
-    },
-  };
-
-  const requestReceiverReducer = useSelector(
-    (state) => state.requestReceiverReducer
-  );
-  const [searchText, setSearchText] = useState("");
-  const [searchDate, setSearchDate] = useState(["", ""]);
-
-  const dispatch = useDispatch();
   useEffect(() => {
     dispatch(
       requestReceiverAction.loadRequestReceivers(1, 10, searchText, searchDate)
     );
   }, []);
 
-  const dataSourceWithKeys = requestReceiverReducer.requests.map(
-    (request, index) => ({
-      ...request,
-      key: request.id,
-    })
-  );
+  const dataSourceWithKeys = requestReceiverReducer.requests.map((request) => ({
+    ...request,
+    key: request.id,
+  }));
 
   const handleChangePageSize = (value) => {
     dispatch(
@@ -256,11 +277,7 @@ const ListRequestReceiverPage = () => {
     );
   };
 
-  const handleSuccess = () => {
-    dispatch(requestReceiverAction.loadRequestReceivers(1, 10, "", ["", ""]));
-    setSearchDate(["", ""]);
-    setSearchText("");
-  };
+
 
   const startItem =
     (requestReceiverReducer.page - 1) * requestReceiverReducer.pageSize + 1;
@@ -275,9 +292,9 @@ const ListRequestReceiverPage = () => {
         รายการคำร้องขอยืมเงิน
       </Title>
 
-      <Row style={{ marginBottom: "24px" }} gutter={16}>
+      <Row style={{ marginBottom: "24px" }} gutter={[16, 16]}>
         {requestReceiverReducer.statusCount.map((status, index) => (
-          <Col span={8} key={index}>
+          <Col xs={24} sm={24} md={12} lg={8} xl={8} key={index}>
             <Card bordered={false}>
               <Statistic
                 title={status.status}
@@ -322,14 +339,14 @@ const ListRequestReceiverPage = () => {
           </Col>
         </Row>
         <Row
-          gutter={[8]}
+          gutter={[16, 16]}
           style={{
             marginBottom: "24px",
             paddingLeft: "24px",
             paddingRight: "24px",
           }}
         >
-          <Col span={8}>
+          <Col xs={24} sm={24} md={12} lg={8} xl={8}>
             <Select
               mode="multiple"
               style={{
@@ -346,7 +363,7 @@ const ListRequestReceiverPage = () => {
             />
           </Col>
 
-          <Col span={8}>
+          <Col xs={24} sm={24} md={12} lg={8} xl={8}>
             <RangePicker
               onChange={onChangeDate}
               style={{
@@ -358,22 +375,16 @@ const ListRequestReceiverPage = () => {
         </Row>
         <Divider style={{ marginTop: "0px" }} />
         <Row
+          gutter={[16, 16]}
           style={{
             marginBottom: "24px",
             paddingLeft: "24px",
             paddingRight: "24px",
           }}
         >
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-            span={24}
-          >
+          <Col xs={24} sm={24} md={12} lg={12} xl={12}>
             <Input
-              style={{ width: "400px" }}
+              style={{ width: "100%" }}
               placeholder="ค้นหาข้อมูลในตาราง"
               prefix={<SearchOutlined />}
               value={searchText}
@@ -384,30 +395,37 @@ const ListRequestReceiverPage = () => {
                 )
               }
             />
-            <div style={{ display: "flex", marginLeft: "auto" }}>
-              <Select
-                defaultValue={10}
-                style={{
-                  width: 120,
-                  marginRight: "8px",
-                }}
-                onChange={handleChangePageSize}
-                options={[
-                  {
-                    value: 10,
-                    label: 10,
-                  },
-                  {
-                    value: 20,
-                    label: 20,
-                  },
-                  {
-                    value: 50,
-                    label: 50,
-                  },
-                ]}
-              />
-            </div>
+          </Col>
+          <Col
+            style={{ display: "flex", justifyContent: "end" }}
+            xs={24}
+            sm={24}
+            md={12}
+            lg={12}
+            xl={12}
+          >
+            <Select
+              defaultValue={10}
+              style={{
+                width: 120,
+                marginRight: "8px",
+              }}
+              onChange={handleChangePageSize}
+              options={[
+                {
+                  value: 10,
+                  label: 10,
+                },
+                {
+                  value: 20,
+                  label: 20,
+                },
+                {
+                  value: 50,
+                  label: 50,
+                },
+              ]}
+            />
           </Col>
         </Row>
 

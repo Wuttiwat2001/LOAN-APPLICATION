@@ -7,34 +7,36 @@ import { server, SUCCESS } from "./../../constants/api";
 import { message } from "antd";
 import api from "../../services/api";
 
-export const setRegisterFetchingToState = () => ({
+export const setRequestFetchingToState = () => ({
   type: REQUEST_EDIT_FETCHING,
 });
 
-export const setRegisterSuccessToState = (payload) => ({
+export const setRequestSuccessToState = () => ({
   type: REQUEST_EDIT_SUCCESS,
-  payload,
 });
 
-export const setRegisterFailedToState = (payload) => ({
+export const setRequestFailedToState = (payload) => ({
   type: REQUEST_EDIT_FAILED,
   payload,
 });
 
-export const requestEdit = (payload) => {
+export const edit = (status, id) => {
   return async (dispatch) => {
     try {
-      dispatch(setRegisterFetchingToState());
+      dispatch(setRequestFetchingToState());
 
-      const response = await api.post(server.REQUEST_URL, {
-        ...payload,
-      });
+      const response = await api.post(
+        `${server.REQUEST_URL}/approveOrRejectRequest/${id}`,
+        {
+          status: status,
+        }
+      );
       if ((response.data.message = SUCCESS)) {
-        dispatch(setRegisterSuccessToState(payload));
-        message.success("ลงทะเบียนสำเร็จ");
+        dispatch(setRequestSuccessToState());
+        message.success(`${status}คำร้องสำเร็จ`);
       }
     } catch (error) {
-      dispatch(setRegisterFailedToState(`${error.error}`));
+      dispatch(setRequestFailedToState(`${error.error}`));
       message.error(
         error.error
           ? `${error.error}`
