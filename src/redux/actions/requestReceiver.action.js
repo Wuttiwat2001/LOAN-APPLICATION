@@ -43,7 +43,7 @@ export const loadRequestReceivers = (page, pageSize, search, searchDate) => {
           }
         );
 
-        if ((response.data.message === SUCCESS)) {
+        if (response.data.message === SUCCESS) {
           dispatch(setRequestSuccessToState(response.data));
         } else {
           dispatch(setRequestFailedToState("เซิร์ฟเวอร์เกิดข้อผิดพลาดโปรดลองใหม่อีกครั้งภายหลัง"));
