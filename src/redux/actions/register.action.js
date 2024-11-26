@@ -34,9 +34,7 @@ export const register = (payload, navigate) => {
         dispatch(setRegisterSuccessToState(response.data.user));
         navigate("/login");
         message.success("ลงทะเบียนสำเร็จ");
-      } else {
-        dispatch(setRegisterFailedToState());
-      }
+      } 
     } catch (error) {
       dispatch(setRegisterFailedToState(`${error.error}`));
       message.error(error.error ? `${error.error}` : "เซิร์ฟเวอร์เกิดข้อผิดพลาดโปรดลองใหม่อีกครั้งภายหลัง");
