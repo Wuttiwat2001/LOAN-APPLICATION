@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import { Layout } from "antd";
 const { Content } = Layout;
 
@@ -46,11 +46,13 @@ const AppContent = () => {
             </Content>
           }
         />
+        <Route path="/" element={<Navigate to="/login" />} />
+        <Route path="*" element={<Navigate to="/login" />} />
       </Route>
 
       <Route element={<ProtectedRoutes />}>
         <Route
-          path="/home"
+          path="/"
           element={
             <Content
               style={{
