@@ -13,11 +13,11 @@ const initialState = {
   isFetching: false,
   isFailed: false,
   errorMessage: "",
-  statusType: [
+  typeCount: [
     { status: "ยืมเงิน", countType: 0 },
+    { status: "ได้รับเงินคืน", countType: 0 },
     { status: "ให้ยืมเงิน", countType: 0 },
     { status: "คืนเงิน", countType: 0 },
-    { status: "ได้รับเงินคืน", countType: 0 },
   ],
 };
 
@@ -34,8 +34,9 @@ export default (state = initialState, { type, payload }) => {
         isFetching: true,
         isFailed: false,
         errorMessage: "",
-        statusType: [
+        typeCount: [
           { status: "ยืมเงิน", countType: 0 },
+          { status: "ได้รับเงินคืน", countType: 0 },
           { status: "ให้ยืมเงิน", countType: 0 },
           { status: "คืนเงิน", countType: 0 },
           { status: "ได้รับเงินคืน", countType: 0 },
@@ -52,12 +53,7 @@ export default (state = initialState, { type, payload }) => {
         isFetching: false,
         isFailed: false,
         errorMessage: "",
-        statusType: [
-          { status: "ยืมเงิน", countType: 0 },
-          { status: "ให้ยืมเงิน", countType: 0 },
-          { status: "คืนเงิน", countType: 0 },
-          { status: "ได้รับเงินคืน", countType: 0 },
-        ],
+        typeCount: payload.typeCount,
       };
 
     case TRANSACTION_FAILED:
@@ -70,11 +66,11 @@ export default (state = initialState, { type, payload }) => {
         isFetching: false,
         isFailed: true,
         errorMessage: payload,
-        statusType: [
+        typeCount: [
           { status: "ยืมเงิน", countType: 0 },
+          { status: "ได้รับเงินคืน", countType: 0 },
           { status: "ให้ยืมเงิน", countType: 0 },
           { status: "คืนเงิน", countType: 0 },
-          { status: "ได้รับเงินคืน", countType: 0 },
         ],
       };
     case TRANSACTION_CLEAR:
@@ -87,7 +83,7 @@ export default (state = initialState, { type, payload }) => {
         isFetching: false,
         isFailed: false,
         errorMessage: "payload",
-        statusType: [
+        typeCount: [
           { status: "ยืมเงิน", countType: 0 },
           { status: "ให้ยืมเงิน", countType: 0 },
           { status: "คืนเงิน", countType: 0 },
