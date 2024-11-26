@@ -4,9 +4,7 @@ import {
   LOGIN_FAILED,
   LOGOUT,
 } from "./../../constants/actionType";
-import {
-  message
-} from "antd";
+import { message } from "antd";
 
 import { server, ACCESS_TOKEN, USER, SUCCESS } from "./../../constants/api";
 
@@ -23,7 +21,7 @@ export const setLoginSuccessToState = (payload) => ({
 
 export const setLoginFailedToState = (payload) => ({
   type: LOGIN_FAILED,
-  payload
+  payload,
 });
 
 export const setLogoutToState = () => ({
@@ -45,10 +43,14 @@ export const login = (payload, navigate) => {
         dispatch(setLoginSuccessToState(response.data.user));
         navigate("/");
         message.success("เข้าสู่ระบบสำเร็จ");
-      } 
+      }
     } catch (error) {
       dispatch(setLoginFailedToState(error.error));
-      message.error(`${error.error}`);
+      message.error(
+        error.error
+          ? `${error.error}`
+          : "เซิร์ฟเวอร์เกิดข้อผิดพลาดโปรดลองใหม่อีกครั้งภายหลัง"
+      );
     }
   };
 };
