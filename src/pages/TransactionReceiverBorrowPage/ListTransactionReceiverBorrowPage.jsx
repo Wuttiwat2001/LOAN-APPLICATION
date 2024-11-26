@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import "./TransactionReceiverBorrow.css";
 import { useSelector, useDispatch } from "react-redux";
-import * as transactionSenderBorrowAction from "../../redux/actions/transactionSenderBorrow.action";
-import * as repayAction from "../../redux/actions/repay.action";
+import * as transactionReceiverBorrowAction from "../../redux/actions/transactionReceiverBorrow.action";
 import {
   Avatar,
   Card,
@@ -39,20 +38,14 @@ const ListTransactionReceiverBorrowPage = () => {
     },
   };
 
-  const transactionSenderBorrowReducer = useSelector(
-    (state) => state.transactionSenderBorrowReducer
+  const transactionReceiverBorrowReducer = useSelector(
+    (state) => state.transactionReceiverBorrowReducer
   );
 
   const [searchText, setSearchText] = useState("");
   const [searchDate, setSearchDate] = useState(["", ""]);
 
   const dispatch = useDispatch();
-
-  const repay = async (id) => {
-    await dispatch(repayAction.repay(id));
-    await dispatch(transactionSenderBorrowAction.loadTransactions(1, 10, searchText, searchDate));  
-    
-  }
 
   const columns = [
     {
@@ -156,11 +149,11 @@ const ListTransactionReceiverBorrowPage = () => {
 
   useEffect(() => {
     dispatch(
-      transactionSenderBorrowAction.loadTransactions(1, 10, searchText, searchDate)
+      transactionReceiverBorrowAction.loadTransactions(1, 10, searchText, searchDate)
     );
   }, []);
 
-  const dataSourceWithKeys = transactionSenderBorrowReducer.transactions.map(
+  const dataSourceWithKeys = transactionReceiverBorrowReducer.transactions.map(
     (transaction) => ({
       ...transaction,
       key: transaction.id,
@@ -169,13 +162,13 @@ const ListTransactionReceiverBorrowPage = () => {
 
   const handleChangePageSize = (value) => {
     dispatch(
-      transactionSenderBorrowAction.loadTransactions(1, value, searchText, searchDate)
+      transactionReceiverBorrowAction.loadTransactions(1, value, searchText, searchDate)
     );
   };
 
   const handleTableChange = (page, pageSize) => {
     dispatch(
-      transactionSenderBorrowAction.loadTransactions(
+      transactionReceiverBorrowAction.loadTransactions(
         page,
         pageSize,
         searchText,
@@ -187,17 +180,17 @@ const ListTransactionReceiverBorrowPage = () => {
   const onChangeDate = (date, dateString) => {
     setSearchDate(dateString);
     dispatch(
-      transactionSenderBorrowAction.loadTransactions(1, 10, searchText, dateString)
+      transactionReceiverBorrowAction.loadTransactions(1, 10, searchText, dateString)
     );
   };
   const startItem =
-    (transactionSenderBorrowReducer.page - 1) *
-      transactionSenderBorrowReducer.pageSize +
+    (transactionReceiverBorrowReducer.page - 1) *
+      transactionReceiverBorrowReducer.pageSize +
     1;
   const endItem = Math.min(
-    transactionSenderBorrowReducer.page *
-      transactionSenderBorrowReducer.pageSize,
-    transactionSenderBorrowReducer.totalTransactions
+    transactionReceiverBorrowReducer.page *
+      transactionReceiverBorrowReducer.pageSize,
+    transactionReceiverBorrowReducer.totalTransactions
   );
 
   return (
@@ -210,11 +203,11 @@ const ListTransactionReceiverBorrowPage = () => {
         <Col xs={24} sm={24} md={12} lg={6} xl={6}>
           <Card>
             <Statistic
-              title={`ชำระแล้ว ${transactionSenderBorrowReducer.paidTransactions.count} รายการ`}
+              title={`ชำระแล้ว ${transactionReceiverBorrowReducer.paidTransactions.count} รายการ`}
               value={new Intl.NumberFormat("th-TH", {
                 style: "currency",
                 currency: "THB",
-              }).format(transactionSenderBorrowReducer.paidTransactions.amount)}
+              }).format(transactionReceiverBorrowReducer.paidTransactions.amount)}
               valueStyle={{
                 color: "#3f8600",
               }}
@@ -225,11 +218,11 @@ const ListTransactionReceiverBorrowPage = () => {
         <Col xs={24} sm={24} md={12} lg={6} xl={6}>
           <Card>
             <Statistic
-              title={`ค้างชำระ ${transactionSenderBorrowReducer.outstandingTransactions.count} รายการ`}
+              title={`ค้างชำระ ${transactionReceiverBorrowReducer.outstandingTransactions.count} รายการ`}
               value={new Intl.NumberFormat("th-TH", {
                 style: "currency",
                 currency: "THB",
-              }).format(transactionSenderBorrowReducer.outstandingTransactions.amount)}
+              }).format(transactionReceiverBorrowReducer.outstandingTransactions.amount)}
               valueStyle={{
                 color: "#d48806",
               }}
@@ -291,7 +284,7 @@ const ListTransactionReceiverBorrowPage = () => {
               onChange={(e) => setSearchText(e.target.value)}
               onPressEnter={() =>
                 dispatch(
-                  transactionSenderBorrowAction.loadTransactions(1, 10, searchText)
+                  transactionReceiverBorrowAction.loadTransactions(1, 10, searchText)
                 )
               }
             />
@@ -333,7 +326,7 @@ const ListTransactionReceiverBorrowPage = () => {
           scroll={{
             y: 90 * 5,
           }}
-          loading={transactionSenderBorrowReducer.isFetching}
+          loading={transactionReceiverBorrowReducer.isFetching}
           columns={columns}
           dataSource={dataSourceWithKeys}
           pagination={false}
@@ -350,13 +343,13 @@ const ListTransactionReceiverBorrowPage = () => {
             <div>
               <Text type="secondary">
                 แสดงรายการ {startItem} - {endItem} จาก{" "}
-                {transactionSenderBorrowReducer.totalTransactions} รายการ
+                {transactionReceiverBorrowReducer.totalTransactions} รายการ
               </Text>
             </div>
             <Pagination
-              current={transactionSenderBorrowReducer.page}
-              pageSize={transactionSenderBorrowReducer.pageSize}
-              total={transactionSenderBorrowReducer.totalTransactions}
+              current={transactionReceiverBorrowReducer.page}
+              pageSize={transactionReceiverBorrowReducer.pageSize}
+              total={transactionReceiverBorrowReducer.totalTransactions}
               onChange={handleTableChange}
             />
           </Col>
