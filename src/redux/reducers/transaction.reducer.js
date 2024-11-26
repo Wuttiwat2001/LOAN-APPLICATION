@@ -44,10 +44,10 @@ export default (state = initialState, { type, payload }) => {
     case TRANSACTION_SUCCESS:
       return {
         ...state,
-        transactions: payload,
-        page: 1,
-        pageSize: 10,
-        totalTransactions: 0,
+        transactions: payload.transactions,
+        page: payload.page,
+        pageSize: payload.pageSize,
+        totalTransactions: payload.totalTransactions,
 
         isFetching: false,
         isFailed: false,
