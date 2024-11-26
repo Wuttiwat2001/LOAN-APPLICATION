@@ -1,4 +1,3 @@
-import React from "react";
 import { Layout, Menu } from "antd";
 import {
   HomeOutlined,
@@ -7,6 +6,7 @@ import {
   HistoryOutlined,
 } from "@ant-design/icons";
 import { useNavigate, useLocation } from "react-router-dom";
+import PropTypes from 'prop-types';
 
 const { Sider } = Layout;
 
@@ -53,6 +53,9 @@ const AppMenu = ({ collapsed }) => {
       />
     </Sider>
   );
+};
+AppMenu.propTypes = {
+  collapsed: PropTypes.bool.isRequired,
 };
 
 export default AppMenu;

@@ -1,7 +1,5 @@
-import React from "react";
 import {
   Dropdown,
-  message,
   Layout,
   Button,
   Typography,
@@ -18,6 +16,7 @@ import { useSelector,useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import * as loginAction from "../../redux/actions/login.action";
+import PropTypes from 'prop-types';
 
 
 const { Header } = Layout;
@@ -31,7 +30,6 @@ const AppHeader = ({ collapsed, setCollapsed }) => {
   const onClick = ({ key }) => {
     if(key == 1){
       dispatch(loginAction.logout(navigate));
-      message.success("ออกจากระบบสำเร็จ");
     }
   };
   const items = [
@@ -103,6 +101,10 @@ const AppHeader = ({ collapsed, setCollapsed }) => {
       </Row>
     </Header>
   );
+};
+AppHeader.propTypes = {
+  collapsed: PropTypes.bool.isRequired,
+  setCollapsed: PropTypes.func.isRequired,
 };
 
 export default AppHeader;
