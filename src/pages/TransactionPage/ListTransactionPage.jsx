@@ -22,15 +22,16 @@ const { Title, Text } = Typography;
 import {
   SearchOutlined,
   ClockCircleOutlined,
-  CheckOutlined,
-  CloseOutlined,
+  ArrowUpOutlined,
+  ArrowDownOutlined,
+  RetweetOutlined,
+  SwapOutlined
 } from "@ant-design/icons";
 import en from "antd/es/date-picker/locale/en_US";
 import moment from "moment";
 const { RangePicker } = DatePicker;
 
 const ListTransactionPage = () => {
-
   const TypeOptions = [
     {
       label: "ได้รับเงินคืน",
@@ -59,16 +60,12 @@ const ListTransactionPage = () => {
     },
   };
 
-  const transactionReducer = useSelector(
-    (state) => state.transactionReducer
-  );
+  const transactionReducer = useSelector((state) => state.transactionReducer);
 
   const [searchText, setSearchText] = useState("");
   const [searchDate, setSearchDate] = useState(["", ""]);
 
   const dispatch = useDispatch();
-
-
 
   const columns = [
     {
@@ -143,46 +140,32 @@ const ListTransactionPage = () => {
   ];
 
   useEffect(() => {
-    dispatch(
-      transactionAction.loadTransactions(1, 10, searchText, searchDate)
-    );
+    dispatch(transactionAction.loadTransactions(1, 10, searchText, searchDate));
   }, []);
 
-  const dataSourceWithKeys = transactionReducer.transactions.map((transaction) => ({
-    ...transaction,
-    key: transaction.id,
-  }));
+  const dataSourceWithKeys = transactionReducer.transactions.map(
+    (transaction) => ({
+      ...transaction,
+      key: transaction.id,
+    })
+  );
 
   const handleChangePageSize = (value) => {
     dispatch(
-      transactionAction.loadTransactions(
-        1,
-        value,
-        searchText,
-        searchDate
-      )
+      transactionAction.loadTransactions(1, value, searchText, searchDate)
     );
   };
 
   const handleTableChange = (page, pageSize) => {
     dispatch(
-      transactionAction.loadTransactions(
-        page,
-        pageSize,
-        searchText,
-        searchDate
-      )
+      transactionAction.loadTransactions(page, pageSize, searchText, searchDate)
     );
   };
 
   const onChangeDate = (date, dateString) => {
     setSearchDate(dateString);
-    dispatch(
-      transactionAction.loadTransactions(1, 10, searchText, dateString)
-    );
+    dispatch(transactionAction.loadTransactions(1, 10, searchText, dateString));
   };
-
-
 
   const startItem =
     (transactionReducer.page - 1) * transactionReducer.pageSize + 1;
@@ -197,36 +180,39 @@ const ListTransactionPage = () => {
         ธุรกรรมของฉัน
       </Title>
 
-      {/* <Row style={{ marginBottom: "24px" }} gutter={[16, 16]}>
-        {requestReceiverReducer.statusCount.map((status, index) => (
-          <Col xs={24} sm={24} md={12} lg={8} xl={8} key={index}>
+      <Row style={{ marginBottom: "24px" }} gutter={[16, 16]}>
+        {transactionReducer.typeCount.map((type, index) => (
+          <Col xs={24} sm={24} md={12} lg={6} xl={6} key={index}>
             <Card bordered={false}>
               <Statistic
-                title={status.status}
-                value={`${status.countStatus} รายการ`}
+                title={type.type}
+                value={`${type.countType} รายการ`}
                 valueStyle={{
                   color:
-                    status.status === "ปฏิเสธ"
+                    type.type === "คืนเงิน" || type.type === "ให้ยืมเงิน"
                       ? "#cf1322"
-                      : status.status === "รอดำเนินการ"
-                      ? "#d46b08"
-                      : "#3f8600",
+                      : type.type === "ได้รับเงินคืน" || type.type === "ยืมเงิน"
+                      ? "#3f8600"
+                      : "#d46b08",
                 }}
                 prefix={
-                  status.status === "ปฏิเสธ" ? (
-                    <CloseOutlined />
-                  ) : status.status === "รอดำเนินการ" ? (
-                    <ClockCircleOutlined />
+                  type.type === "คืนเงิน" ? (
+                    <ArrowDownOutlined />
+                  ) : type.type === "ยืมเงิน" ? (
+                    <RetweetOutlined />
+                  ) : type.type === "ได้รับเงินคืน" ? (
+                    <ArrowUpOutlined />
+                  ) : type.type === "ให้ยืมเงิน" ? (
+                    <SwapOutlined />
                   ) : (
-                    <CheckOutlined />
+                    ""
                   )
                 }
               />
             </Card>
           </Col>
         ))}
-      </Row> */}
-
+      </Row>
       <Card className="cardStyle">
         <Row>
           <Col
@@ -295,9 +281,7 @@ const ListTransactionPage = () => {
               value={searchText}
               onChange={(e) => setSearchText(e.target.value)}
               onPressEnter={() =>
-                dispatch(
-                  transactionAction.loadTransactions(1, 10, searchText)
-                )
+                dispatch(transactionAction.loadTransactions(1, 10, searchText))
               }
             />
           </Col>
