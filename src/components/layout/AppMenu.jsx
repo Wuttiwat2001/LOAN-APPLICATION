@@ -39,7 +39,7 @@ const AppMenu = ({ collapsed }) => {
             label: "ขอยืมเงิน",
           },
           {
-            key: "/repay",
+            key: "/transaction-sender-borrow",
             icon: <UserSwitchOutlined />,
             label: "คืนเงิน",
           },

@@ -9,6 +9,7 @@ import ListRequestSenderPage from "../../pages/RequestSenderPage/ListRequestSend
 import ListRequestReceiverPage from "../../pages/RequestReceiverPage/ListRequestReceiverPage";
 
 import ListTransactionPage from "../../pages/TransactionPage/ListTransactionPage";
+import ListTransactionSenderBorrowPage from "../../pages/TransactionSenderBorrowPage/ListTransactionSenderBorrowPage";
 
 // guard router
 import PublicRoutes from "../../utils/PublicRoutes";
@@ -66,6 +67,26 @@ const AppContent = () => {
               }}
             >
               <ListRequestReceiverPage />
+            </Content>
+          }
+        />
+
+
+<Route
+          path="/transaction-sender-borrow"
+          element={
+            <Content
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                margin: "24px 16px",
+                padding: 24,
+                background: "#fff",
+                borderRadius: "8px",
+                overflow: "auto",
+              }}
+            >
+              <ListTransactionSenderBorrowPage />
             </Content>
           }
         />
