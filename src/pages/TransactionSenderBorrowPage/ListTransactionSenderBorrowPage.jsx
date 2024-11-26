@@ -22,10 +22,8 @@ const { Title, Text } = Typography;
 import {
   SearchOutlined,
   ClockCircleOutlined,
-  ArrowUpOutlined,
-  ArrowDownOutlined,
-  RetweetOutlined,
-  SwapOutlined,
+  CheckOutlined,
+  ExclamationCircleOutlined
 } from "@ant-design/icons";
 import en from "antd/es/date-picker/locale/en_US";
 import moment from "moment";
@@ -202,38 +200,38 @@ const ListTransactionSenderBorrowPage = () => {
         คืนเงิน
       </Title>
 
-      {/* <Row style={{ marginBottom: "24px" }} gutter={[16, 16]}>
+      <Row style={{ marginBottom: "24px" }} gutter={[16, 16]}>
         <Col xs={24} sm={24} md={12} lg={6} xl={6}>
           <Card bordered={false}>
             <Statistic
-              title={`รายรับ ${transactionSenderBorrowReducer.incomeTransactions.count} รายการ`}
+              title={`ชำระแล้ว ${transactionSenderBorrowReducer.paidTransactions.count} รายการ`}
               value={new Intl.NumberFormat("th-TH", {
                 style: "currency",
                 currency: "THB",
-              }).format(transactionSenderBorrowReducer.incomeTransactions.amount)}
+              }).format(transactionSenderBorrowReducer.paidTransactions.amount)}
               valueStyle={{
                 color: "#3f8600",
               }}
-              prefix={<ArrowUpOutlined />}
+              prefix={<CheckOutlined />}
             ></Statistic>
           </Card>
         </Col>
         <Col xs={24} sm={24} md={12} lg={6} xl={6}>
           <Card bordered={false}>
             <Statistic
-              title={`รายจ่าย ${transactionSenderBorrowReducer.expenseTransactions.count} รายการ`}
+              title={`ค้างชำระ ${transactionSenderBorrowReducer.outstandingTransactions.count} รายการ`}
               value={new Intl.NumberFormat("th-TH", {
                 style: "currency",
                 currency: "THB",
-              }).format(transactionSenderBorrowReducer.expenseTransactions.amount)}
+              }).format(transactionSenderBorrowReducer.outstandingTransactions.amount)}
               valueStyle={{
-                color: "#cf1322",
+                color: "#d48806",
               }}
-              prefix={<ArrowDownOutlined />}
+              prefix={<ExclamationCircleOutlined />}
             ></Statistic>
           </Card>
         </Col>
-      </Row> */}
+      </Row>
 
       <Card className="cardStyle">
         <Row>
