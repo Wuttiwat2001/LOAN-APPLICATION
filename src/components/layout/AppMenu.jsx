@@ -5,10 +5,10 @@ import {
   MailOutlined,
   UserSwitchOutlined,
   HistoryOutlined,
+  SwapOutlined
 } from "@ant-design/icons";
 import { useNavigate, useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
-
 const { Sider } = Layout;
 
 const AppMenu = ({ collapsed }) => {
@@ -44,9 +44,14 @@ const AppMenu = ({ collapsed }) => {
             label: "คืนเงิน",
           },
           {
+            key: "/transaction-receiver-borrow",
+            icon: <SwapOutlined />,
+            label: "ให้ยืมเงิน",
+          },
+          {
             key: "/request-receiver",
             icon: <MailOutlined />,
-            label: "รายการคำร้อง",
+            label: "คำร้อง",
           },
           {
             key: "/transaction",

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import "./RequestReceiver.css";
+import "./TransactionReceiverBorrow.css";
 import { useSelector, useDispatch } from "react-redux";
-import * as requestReceiverAction from "../../redux/actions/requestReceiver.action";
-import * as requestEdit from "../../redux/actions/requestEdit.action";
+import * as transactionSenderBorrowAction from "../../redux/actions/transactionSenderBorrow.action";
+import * as repayAction from "../../redux/actions/repay.action";
 import {
   Avatar,
   Card,
@@ -17,26 +17,19 @@ import {
   Pagination,
   DatePicker,
   Statistic,
-  Popconfirm,
-  Button,
-  Tooltip,
 } from "antd";
 const { Title, Text } = Typography;
 import {
   SearchOutlined,
   ClockCircleOutlined,
   CheckOutlined,
-  CloseOutlined,
-  ExclamationCircleOutlined,
+  ExclamationCircleOutlined
 } from "@ant-design/icons";
 import en from "antd/es/date-picker/locale/en_US";
 import moment from "moment";
 const { RangePicker } = DatePicker;
 
-const ListRequestReceiverPage = () => {
-
-
-
+const ListTransactionReceiverBorrowPage = () => {
   const locale = {
     ...en,
     lang: {
@@ -46,31 +39,20 @@ const ListRequestReceiverPage = () => {
     },
   };
 
-  const requestReceiverReducer = useSelector(
-    (state) => state.requestReceiverReducer
+  const transactionSenderBorrowReducer = useSelector(
+    (state) => state.transactionSenderBorrowReducer
   );
-  const user = useSelector((state) => state.loginReducer.user);
 
   const [searchText, setSearchText] = useState("");
   const [searchDate, setSearchDate] = useState(["", ""]);
 
   const dispatch = useDispatch();
 
-  
-  const approveRequest = async (status, id) => {
-    await dispatch(requestEdit.edit(status, id));
-    await dispatch(
-      requestReceiverAction.loadRequestReceivers(1, 10, searchText, searchDate)
-    );
-  };
-
-  const rejectRequest = async (status, id) => {
-    await dispatch(requestEdit.edit(status, id));
-    await dispatch(
-      requestReceiverAction.loadRequestReceivers(1, 10, searchText, searchDate)
-    );
-  };
-
+  const repay = async (id) => {
+    await dispatch(repayAction.repay(id));
+    await dispatch(transactionSenderBorrowAction.loadTransactions(1, 10, searchText, searchDate));  
+    
+  }
 
   const columns = [
     {
@@ -95,15 +77,15 @@ const ListRequestReceiverPage = () => {
       ),
     },
     {
-      title: "สถานะ",
-      dataIndex: "status",
-      key: "status",
+      title: "ประเภท",
+      dataIndex: "type",
+      key: "type",
       render: (text) => {
-        let color = "green";
-        if (text === "รอดำเนินการ") {
-          color = "orange";
-        } else if (text === "ปฏิเสธ") {
+        let color = "";
+        if (text === "ยืมเงิน") {
           color = "red";
+        } else {
+          color = "success";
         }
         return (
           <div>
@@ -116,28 +98,33 @@ const ListRequestReceiverPage = () => {
       title: "จำนวน",
       key: "amount",
       dataIndex: "amount",
-      render: (text, record) => {
-        const warningIcon = user.balance < record.amount;
+      render: (text) => {
         return (
           <div>
-            <Text style={{ marginRight: "8px" }} strong>
+            <Text strong>
               {new Intl.NumberFormat("th-TH", {
                 style: "currency",
                 currency: "THB",
               }).format(text)}
             </Text>
-            <Tooltip title="จำนวนเงินไม่พอ">
-              {warningIcon && (
-                <ExclamationCircleOutlined
-                  style={{
-                    color: "gold",
-                  }}
-                />
-              )}
-            </Tooltip>
           </div>
         );
       },
+    },
+    {
+      title: "สถานะ",
+      key: "isBorrow",
+      dataIndex: "isBorrow",
+      render: (text) => (
+        <div>
+          <div>
+            <Tag color={text ? "green" : "gold"}>
+              {" "}
+              {text ? "ชำระแล้ว" : "ยังไม่ชำระ"}
+            </Tag>
+          </div>
+        </div>
+      ),
     },
     {
       title: "วันที่สร้าง",
@@ -165,89 +152,30 @@ const ListRequestReceiverPage = () => {
         </div>
       ),
     },
-    {
-      title: "",
-      dataIndex: "action",
-      render: (_, record) => {
-        const isDisabledApprove =
-          record.status !== "รอดำเนินการ" || user.balance < record.amount;
-        const isDisabledReject = record.status !== "รอดำเนินการ";
-
-        return (
-          <div style={{ display: "flex" }}>
-            <div style={{ marginRight: "8px" }}>
-              <Popconfirm
-                title="คุณต้องการอนุมัติคำร้องใช่หรือไม่ ?"
-                onConfirm={() => {
-                  approveRequest("อนุมัติ", record.id);
-                }}
-                okText="ตกลง"
-                cancelText="ยกเลิก"
-              >
-                <Button
-                  style={{
-                    color: !isDisabledApprove ? "#3F8600" : undefined,
-                    borderColor: !isDisabledApprove ? "#3F8600" : undefined,
-                  }}
-                  variant="outlined"
-                  disabled={isDisabledApprove}
-                >
-                  อนุมัติ
-                </Button>
-              </Popconfirm>
-            </div>
-            <div>
-              <Popconfirm
-                title="คุณต้องการปฏิเสธคำร้องใช่หรือไม่ ?"
-                onConfirm={() => {
-                  rejectRequest("ปฏิเสธ", record.id);
-                }}
-                okText="ตกลง"
-                cancelText="ยกเลิก"
-              >
-                <Button
-                  style={{
-                    color: !isDisabledReject ? "#cf1322" : undefined,
-                    borderColor: !isDisabledReject ? "#cf1322" : undefined,
-                  }}
-                  variant="outlined"
-                  disabled={isDisabledReject}
-                >
-                  ปฏิเสธ
-                </Button>
-              </Popconfirm>
-            </div>
-          </div>
-        );
-      },
-    },
   ];
 
   useEffect(() => {
     dispatch(
-      requestReceiverAction.loadRequestReceivers(1, 10, searchText, searchDate)
+      transactionSenderBorrowAction.loadTransactions(1, 10, searchText, searchDate)
     );
   }, []);
 
-  const dataSourceWithKeys = requestReceiverReducer.requests.map((request) => ({
-    ...request,
-    key: request.id,
-  }));
+  const dataSourceWithKeys = transactionSenderBorrowReducer.transactions.map(
+    (transaction) => ({
+      ...transaction,
+      key: transaction.id,
+    })
+  );
 
   const handleChangePageSize = (value) => {
     dispatch(
-      requestReceiverAction.loadRequestReceivers(
-        1,
-        value,
-        searchText,
-        searchDate
-      )
+      transactionSenderBorrowAction.loadTransactions(1, value, searchText, searchDate)
     );
   };
 
   const handleTableChange = (page, pageSize) => {
     dispatch(
-      requestReceiverAction.loadRequestReceivers(
+      transactionSenderBorrowAction.loadTransactions(
         page,
         pageSize,
         searchText,
@@ -259,53 +187,56 @@ const ListRequestReceiverPage = () => {
   const onChangeDate = (date, dateString) => {
     setSearchDate(dateString);
     dispatch(
-      requestReceiverAction.loadRequestReceivers(1, 10, searchText, dateString)
+      transactionSenderBorrowAction.loadTransactions(1, 10, searchText, dateString)
     );
   };
-
-
-
   const startItem =
-    (requestReceiverReducer.page - 1) * requestReceiverReducer.pageSize + 1;
+    (transactionSenderBorrowReducer.page - 1) *
+      transactionSenderBorrowReducer.pageSize +
+    1;
   const endItem = Math.min(
-    requestReceiverReducer.page * requestReceiverReducer.pageSize,
-    requestReceiverReducer.totalRequests
+    transactionSenderBorrowReducer.page *
+      transactionSenderBorrowReducer.pageSize,
+    transactionSenderBorrowReducer.totalTransactions
   );
 
   return (
     <>
       <Title style={{ marginBottom: "24px", marginTop: "24px" }} level={3}>
-        คำร้อง
+        ให้ยืมเงิน
       </Title>
 
       <Row style={{ marginBottom: "24px" }} gutter={[16, 16]}>
-        {requestReceiverReducer.statusCount.map((status, index) => (
-          <Col xs={24} sm={24} md={12} lg={8} xl={8} key={index}>
-            <Card>
-              <Statistic
-                title={status.status}
-                value={`${status.countStatus} รายการ`}
-                valueStyle={{
-                  color:
-                    status.status === "ปฏิเสธ"
-                      ? "#cf1322"
-                      : status.status === "รอดำเนินการ"
-                      ? "#d46b08"
-                      : "#3f8600",
-                }}
-                prefix={
-                  status.status === "ปฏิเสธ" ? (
-                    <CloseOutlined />
-                  ) : status.status === "รอดำเนินการ" ? (
-                    <ClockCircleOutlined />
-                  ) : (
-                    <CheckOutlined />
-                  )
-                }
-              />
-            </Card>
-          </Col>
-        ))}
+        <Col xs={24} sm={24} md={12} lg={6} xl={6}>
+          <Card>
+            <Statistic
+              title={`ชำระแล้ว ${transactionSenderBorrowReducer.paidTransactions.count} รายการ`}
+              value={new Intl.NumberFormat("th-TH", {
+                style: "currency",
+                currency: "THB",
+              }).format(transactionSenderBorrowReducer.paidTransactions.amount)}
+              valueStyle={{
+                color: "#3f8600",
+              }}
+              prefix={<CheckOutlined />}
+            ></Statistic>
+          </Card>
+        </Col>
+        <Col xs={24} sm={24} md={12} lg={6} xl={6}>
+          <Card>
+            <Statistic
+              title={`ค้างชำระ ${transactionSenderBorrowReducer.outstandingTransactions.count} รายการ`}
+              value={new Intl.NumberFormat("th-TH", {
+                style: "currency",
+                currency: "THB",
+              }).format(transactionSenderBorrowReducer.outstandingTransactions.amount)}
+              valueStyle={{
+                color: "#d48806",
+              }}
+              prefix={<ExclamationCircleOutlined />}
+            ></Statistic>
+          </Card>
+        </Col>
       </Row>
 
       <Card className="cardStyle">
@@ -320,7 +251,7 @@ const ListRequestReceiverPage = () => {
             span={24}
           >
             <Title style={{ margin: 0 }} level={5}>
-              รายการคำร้องขอยืมเงิน
+              รายการที่ให้ยืมเงิน
             </Title>
           </Col>
         </Row>
@@ -360,7 +291,7 @@ const ListRequestReceiverPage = () => {
               onChange={(e) => setSearchText(e.target.value)}
               onPressEnter={() =>
                 dispatch(
-                  requestReceiverAction.loadRequestReceivers(1, 10, searchText)
+                  transactionSenderBorrowAction.loadTransactions(1, 10, searchText)
                 )
               }
             />
@@ -402,21 +333,10 @@ const ListRequestReceiverPage = () => {
           scroll={{
             y: 90 * 5,
           }}
-          loading={requestReceiverReducer.isFetching}
+          loading={transactionSenderBorrowReducer.isFetching}
           columns={columns}
           dataSource={dataSourceWithKeys}
           pagination={false}
-          expandable={{
-            expandedRowRender: (record) => (
-              <p
-                style={{
-                  margin: 0,
-                }}
-              >
-                รายละเอียดเพิ่มเติม : {record.description || "-"}
-              </p>
-            ),
-          }}
         />
         <Row>
           <Col
@@ -430,13 +350,13 @@ const ListRequestReceiverPage = () => {
             <div>
               <Text type="secondary">
                 แสดงรายการ {startItem} - {endItem} จาก{" "}
-                {requestReceiverReducer.totalRequests} รายการ
+                {transactionSenderBorrowReducer.totalTransactions} รายการ
               </Text>
             </div>
             <Pagination
-              current={requestReceiverReducer.page}
-              pageSize={requestReceiverReducer.pageSize}
-              total={requestReceiverReducer.totalRequests}
+              current={transactionSenderBorrowReducer.page}
+              pageSize={transactionSenderBorrowReducer.pageSize}
+              total={transactionSenderBorrowReducer.totalTransactions}
               onChange={handleTableChange}
             />
           </Col>
@@ -446,4 +366,4 @@ const ListRequestReceiverPage = () => {
   );
 };
 
-export default ListRequestReceiverPage;
+export default ListTransactionReceiverBorrowPage;
