@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   Form,
   Input,
@@ -11,9 +11,10 @@ import {
   message,
 } from "antd";
 const { Option } = Select;
-import { UserOutlined, PlusOutlined } from "@ant-design/icons";
+import { UserOutlined, PlusOutlined, SendOutlined } from "@ant-design/icons";
 import { useSelector, useDispatch } from "react-redux";
 import moment from "moment";
+import PropTypes from "prop-types";
 import * as userAction from "../../redux/actions/user.action";
 import * as loanAction from "../../redux/actions/createRequestBorrow.action";
 
@@ -24,15 +25,17 @@ const CreateRequestLoanPage = ({ onSuccess }) => {
   const user = useSelector((state) => state.loginReducer.user);
   const users = useSelector((state) => state.userReducer.users);
   const filteredUsers = users.filter((u) => u.id !== user.id);
-  const createRequestBorrowReducer = useSelector((state) => state.createRequestBorrowReducer);
+  const createRequestBorrowReducer = useSelector(
+    (state) => state.createRequestBorrowReducer
+  );
 
   const onFinish = async (values) => {
-    try{
+    try {
       await dispatch(loanAction.createRequestBorrow(values));
       message.success("คำร้องขอยืมเงินสำเร็จ");
       setModalOpen(false);
       onSuccess();
-    }catch(error){
+    } catch (error) {
       message.error("คำร้องขอยืมเงินไม่สำเร็จ");
       setModalOpen(false);
     }
@@ -181,6 +184,7 @@ const CreateRequestLoanPage = ({ onSuccess }) => {
                 onClick={handleSendRequest}
               >
                 ส่งคำขอ
+                <SendOutlined style={{ margi: "8px" }} />
               </Button>
             </Form.Item>
           </Form>
@@ -208,6 +212,9 @@ const CreateRequestLoanPage = ({ onSuccess }) => {
       </Modal>
     </>
   );
+};
+CreateRequestLoanPage.propTypes = {
+  onSuccess: PropTypes.func.isRequired,
 };
 
 export default CreateRequestLoanPage;
