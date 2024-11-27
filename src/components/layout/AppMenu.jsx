@@ -1,6 +1,5 @@
 import { Layout, Menu } from "antd";
 import {
-  HomeOutlined,
   FileAddOutlined,
   MailOutlined,
   UserSwitchOutlined,
