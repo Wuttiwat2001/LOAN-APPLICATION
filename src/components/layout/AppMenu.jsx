@@ -4,7 +4,7 @@ import {
   MailOutlined,
   UserSwitchOutlined,
   HistoryOutlined,
-  SwapOutlined
+  SwapOutlined,
 } from "@ant-design/icons";
 import { useNavigate, useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
@@ -20,9 +20,6 @@ const AppMenu = ({ collapsed }) => {
 
   return (
     <Sider trigger={null} collapsible collapsed={collapsed}>
-      
-      
-
       <Menu
         mode="inline"
         selectedKeys={[location.pathname]}

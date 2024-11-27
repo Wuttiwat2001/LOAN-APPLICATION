@@ -17,6 +17,8 @@ import { useSelector,useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import PropTypes from 'prop-types';
 import * as loginAction from "../../redux/actions/login.action";
+import * as userAction from "../../redux/actions/user.action";
+import { useEffect } from "react";
 
 
 const { Header } = Layout;
@@ -27,6 +29,10 @@ const AppHeader = ({ collapsed, setCollapsed }) => {
   const navigate = useNavigate();
   const user = useSelector((state) => state.loginReducer.user);
   const balance = useSelector((state) => state.userReducer.balance);
+
+  useEffect(() => {
+    dispatch(userAction.loadUserBalance());
+  }, [dispatch]);
 
   const onClick = ({ key }) => {
     if(key == 1){

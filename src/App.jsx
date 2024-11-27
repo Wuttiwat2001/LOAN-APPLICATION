@@ -3,7 +3,6 @@ import { Layout } from "antd";
 import AppHeader from "./components/layout/AppHeader";
 import AppMenu from "./components/layout/AppMenu";
 import AppContent from "./components/layout/AppContent";
-import * as userAction from "./redux/actions/user.action";
 import { useSelector, useDispatch } from "react-redux";
 import * as loginAction from "./redux/actions/login.action";
 
@@ -14,10 +13,6 @@ const App = () => {
 
   useEffect(() => {
     dispatch(loginAction.restoreLogin());
-  }, [dispatch]);
-
-  useEffect(() => {
-    dispatch(userAction.loadUserBalance());
   }, [dispatch]);
 
   return (
