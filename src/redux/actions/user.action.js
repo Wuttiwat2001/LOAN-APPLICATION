@@ -11,6 +11,7 @@ import {
 import { server, SUCCESS } from "../../constants/api";
 import api from "../../services/api";
 import store from "../store";
+import { message } from "antd";
 
 // User
 
@@ -23,7 +24,9 @@ export const setUserSuccessToState = (payload) => ({
   payload,
 });
 
-export const setUserFailedToState = () => ({ type: USER_FAILED });
+export const setUserFailedToState = () => ({
+  type: USER_FAILED,
+});
 
 export const setUserClearToState = () => ({ type: USER_CLEAR });
 
@@ -54,6 +57,11 @@ export const loadUsers = () => {
       }
     } catch (error) {
       dispatch(setUserFailedToState());
+      message.error(
+        error.error
+          ? `${error.error}`
+          : "เซิร์ฟเวอร์เกิดข้อผิดพลาดโปรดลองใหม่อีกครั้งภายหลัง"
+      );
     }
   };
 };
